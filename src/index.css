@@ -1,0 +1,785 @@
+@import url("https://fonts.googleapis.com/css2?family=Georama:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
+@import "tailwindcss";
+
+html,
+body {
+  width: 100dvw;
+  overflow: hidden;
+  height: 100dvh;
+}
+
+@theme {
+  --font-georama: "Georama", sans-serif;
+  --font-roboto: "Roboto Mono", monospace;
+  --breakpoint-3xl: 1920px;
+}
+
+@utility flex-center {
+  @apply flex items-center justify-center;
+}
+
+@utility col-center {
+  @apply flex flex-col items-center justify-center;
+}
+
+@utility abs-center {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
+}
+
+@layer base {
+  main {
+    @apply w-dvw h-dvh overflow-hidden;
+  }
+
+/* --- Apple macOS Menubar & Glass Panels (Portfolio Frosted Glass Theme) --- */
+.mac-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  user-select: none;
+  position: relative;
+  z-index: 9999;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mac-navbar > div button > img,
+.mac-navbar > div > ul button > img {
+  filter: brightness(0) invert(1);
+  opacity: 0.92;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.mac-navbar > div button > img:hover,
+.mac-navbar > div > ul button > img:hover {
+  opacity: 1;
+}
+
+.mac-dropdown img,
+html.light .mac-dropdown img,
+html.dark .mac-dropdown img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.mac-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.90);
+  transition: all 120ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  background: transparent;
+  outline: none;
+}
+
+.mac-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.mac-icon-btn:active {
+  transform: scale(0.95);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.mac-icon-btn.active {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
+/* shadcn / macOS Dropdown Container */
+.mac-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 99999;
+  background: rgba(18, 18, 22, 0.88);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: #f4f4f5;
+  overflow: hidden;
+  animation: macMenuFadeIn 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes macMenuFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* shadcn / Apple Menu Item Hover */
+.apple-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 450;
+  transition: all 100ms ease;
+  cursor: pointer;
+  text-align: left;
+  color: #e4e4e7;
+}
+
+.apple-menu-item:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+
+/* --- Apple Light Mode Appearance System --- */
+html.light .mac-navbar {
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(30px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #1d1d1f !important;
+}
+
+html.light .mac-navbar span,
+html.light .mac-navbar button,
+html.light .mac-navbar p {
+  color: #1d1d1f !important;
+}
+
+html.light .mac-navbar button:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .mac-navbar > div button > img,
+html.light .mac-navbar > div > ul button > img {
+  filter: brightness(0) !important;
+  opacity: 0.85;
+}
+
+html.light .mac-dropdown {
+  background: rgba(255, 255, 255, 0.94) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+  color: #09090b !important;
+}
+
+html.light .mac-dropdown span,
+html.light .mac-dropdown p,
+html.light .mac-dropdown h1,
+html.light .mac-dropdown h2,
+html.light .mac-dropdown h3,
+html.light .mac-dropdown h4,
+html.light .mac-dropdown div {
+  color: #18181b;
+}
+
+html.light .mac-dropdown .text-white,
+html.light .mac-dropdown .text-white\/95,
+html.light .mac-dropdown .text-white\/90,
+html.light .mac-dropdown .text-white\/80 {
+  color: #18181b !important;
+}
+
+html.light .mac-dropdown .text-white\/50,
+html.light .mac-dropdown .text-white\/40,
+html.light .mac-dropdown .text-zinc-400,
+html.light .mac-dropdown .text-gray-400 {
+  color: #71717a !important;
+}
+
+html.light .mac-dropdown .bg-white\/\[0\.08\],
+html.light .mac-dropdown .bg-white\/\[0\.04\],
+html.light .mac-dropdown .bg-white\/10,
+html.light .mac-dropdown .bg-white\/15,
+html.light .mac-dropdown .bg-zinc-700\/40 {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html.light .apple-menu-item {
+  color: #27272a !important;
+}
+
+html.light .apple-menu-item:hover {
+  background: #f4f4f5 !important;
+  color: #09090b !important;
+}
+
+html.light .apple-menu-item:hover span,
+html.light .apple-menu-item:hover p,
+html.light .apple-menu-item:hover div,
+html.light .apple-menu-item:hover svg {
+  color: #09090b !important;
+}
+
+html.light #dock .dock-container {
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+html.light #dock .dock-container span.bg-white\/90 {
+  background-color: rgba(30, 30, 30, 0.85) !important;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ==========================================================================
+   macOS Windows Light Theme Engine
+   ========================================================================== */
+html.light #finder,
+html.light #safari,
+html.light #photos,
+html.light #contact,
+html.light #resume,
+html.light #txtfile,
+html.light #imgfile {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* --- Common Window Header for Light Mode --- */
+html.light #finder #window-header,
+html.light #safari #window-header,
+html.light #photos #window-header,
+html.light #contact #window-header,
+html.light #resume #window-header,
+html.light #txtfile #window-header,
+html.light #imgfile #window-header {
+  background: linear-gradient(180deg, #f7f7f8 0%, #ebebec 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  color: #1d1d1f !important;
+}
+
+html.light #finder #window-header span,
+html.light #finder #window-header button,
+html.light #safari #window-header span,
+html.light #safari #window-header button,
+html.light #contact #window-header p,
+html.light #resume #window-header span,
+html.light #txtfile #window-header span,
+html.light #imgfile #window-header span {
+  color: #1d1d1f !important;
+}
+
+html.light #finder #window-header button:hover,
+html.light #safari #window-header button:hover,
+html.light #imgfile #window-header button:hover {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+  color: #000000 !important;
+}
+
+/* --- Finder in Light Mode --- */
+html.light #finder aside {
+  background-color: #f2f2f4 !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light #finder aside h3 {
+  color: #86868b !important;
+}
+
+html.light #finder aside li {
+  color: #2c2c2e !important;
+}
+
+html.light #finder aside li:hover {
+  background-color: rgba(0, 0, 0, 0.07) !important;
+  color: #000000 !important;
+}
+
+html.light #finder aside li.bg-blue-600,
+html.light #finder aside li.bg-blue-600:hover {
+  background-color: #007aff !important;
+  color: #ffffff !important;
+}
+
+html.light #finder aside li.bg-blue-600 span {
+  color: #ffffff !important;
+}
+
+html.light #finder main {
+  background-color: #ffffff !important;
+}
+
+html.light #finder main .finder-draggable-item {
+  color: #1d1d1f !important;
+}
+
+html.light #finder main .finder-draggable-item:hover {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light #finder main .finder-draggable-item span {
+  color: #1d1d1f !important;
+}
+
+html.light #finder main .finder-draggable-item:hover span {
+  color: #000000 !important;
+}
+
+html.light #finder main h2 {
+  color: #1d1d1f !important;
+}
+
+html.light #finder main .bg-white\/5 {
+  background-color: #f5f5f7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light #finder main .bg-white\/5 p {
+  color: #3a3a3c !important;
+}
+
+html.light #finder .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #1d1d1f !important;
+}
+
+html.light #finder .bg-white\/10:hover {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  color: #000000 !important;
+}
+
+html.light #finder #window-header input,
+html.light #safari #window-header input,
+html.light #photos #window-header input {
+  color: #1d1d1f !important;
+  background-color: transparent !important;
+}
+
+html.light #finder #window-header .bg-\[\#1e1e1e\],
+html.light #safari #window-header .bg-\[\#1e1e1e\],
+html.light #photos #window-header .bg-\[\#18181b\] {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light #finder #window-header input::placeholder,
+html.light #safari #window-header input::placeholder,
+html.light #photos #window-header input::placeholder {
+  color: #86868b !important;
+}
+
+/* --- Safari in Light Mode --- */
+html.light #safari main,
+html.light #safari .bg-\[\#1c1c1e\] {
+  background-color: #ffffff !important;
+}
+
+html.light #safari .group:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light #safari h3 {
+  color: #1d1d1f !important;
+}
+
+html.light #safari .group:hover h3 {
+  color: #007aff !important;
+}
+
+html.light #safari .text-gray-400 {
+  color: #6e6e73 !important;
+}
+
+/* --- Terminal in Light Mode (Apple Terminal Basic Theme) --- */
+html.light #terminal {
+  background-color: #fbfbfd !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  color: #1d1d1f !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.16) !important;
+}
+
+html.light #terminal #window-header {
+  background: linear-gradient(180deg, #eaeaea 0%, #dddddf 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14) !important;
+  color: #1d1d1f !important;
+}
+
+html.light #terminal #window-header span {
+  color: #1d1d1f !important;
+}
+
+html.light #terminal #window-header svg {
+  color: #515154 !important;
+}
+
+html.light #terminal .bg-\[\#1e1e1e\] {
+  background-color: #fbfbfd !important;
+  color: #1d1d1f !important;
+}
+
+html.light #terminal p,
+html.light #terminal span,
+html.light #terminal div {
+  color: #1d1d1f;
+}
+
+html.light #terminal .text-white,
+html.light #terminal .text-\[\#e5e5e5\],
+html.light #terminal .text-\[\#e5e7eb\],
+html.light #terminal .text-\[\#d1d5db\] {
+  color: #111827 !important;
+  font-weight: 500;
+}
+
+html.light #terminal .text-\[\#9ca3af\],
+html.light #terminal .text-\[\#a1a1aa\],
+html.light #terminal .text-gray-400 {
+  color: #4b5563 !important;
+}
+
+html.light #terminal .border-\[\#3a3a3c\],
+html.light #terminal .border-zinc-700 {
+  border-color: #e5e7eb !important;
+}
+
+html.light #terminal input {
+  color: #111827 !important;
+  caret-color: #111827 !important;
+}
+
+html.light #terminal a.text-\[\#60a5fa\] {
+  color: #0066cc !important;
+}
+
+/* --- Contact in Light Mode --- */
+html.light #contact {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.14) !important;
+  color: #1d1d1f !important;
+}
+
+html.light #contact #window-header {
+  background: linear-gradient(180deg, #f7f7f8 0%, #ebebec 100%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+}
+
+html.light #contact #window-header p {
+  color: #1d1d1f !important;
+}
+
+html.light #contact h2 {
+  color: #1d1d1f !important;
+}
+
+html.light #contact p {
+  color: #515154 !important;
+}
+
+/* --- Photos in Light Mode --- */
+html.light #photos {
+  background-color: #ffffff !important;
+}
+
+html.light #photos aside {
+  background-color: #f2f2f4 !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light #photos aside button {
+  color: #333336 !important;
+}
+
+html.light #photos aside button:hover {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+html.light #photos aside button.bg-blue-600 {
+  background-color: #007aff !important;
+  color: #ffffff !important;
+}
+
+html.light #photos main {
+  background-color: #ffffff !important;
+}
+
+/* --- Text File & Image File in Light Mode --- */
+html.light #txtfile .bg-\[\#1c1c1e\],
+html.light #imgfile .bg-\[\#18181b\] {
+  background-color: #ffffff !important;
+}
+
+html.light #txtfile p,
+html.light #txtfile span {
+  color: #1d1d1f !important;
+}
+
+html.light #txtfile h3 {
+  color: #007aff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html.light #imgfile .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+  color: #1d1d1f !important;
+}
+
+/* Apple Slider */
+input[type="range"].mac-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 26px;
+  border-radius: 9999px;
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: opacity 120ms ease;
+}
+
+input[type="range"].mac-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+input[type="range"].mac-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  border: none;
+}
+
+/* macOS Toggle Switch */
+.mac-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.mac-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.mac-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mac-switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 1px;
+  bottom: 1px;
+  background-color: white;
+  transition: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+input:checked + .mac-switch-slider {
+  background-color: #007aff;
+  border-color: #007aff;
+}
+
+input:checked + .mac-switch-slider:before {
+  transform: translateX(16px);
+}
+
+@keyframes notificationSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(45px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes notificationSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(50px) scale(0.95);
+  }
+}
+
+.animate-notification-in {
+  animation: notificationSlideIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-notification-out {
+  animation: notificationSlideOut 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sidebarSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-sidebar-in {
+  animation: sidebarSlideIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Real-time Display Brightness Dimmer */
+.screen-brightness-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #000000;
+  pointer-events: none;
+  z-index: 9990;
+  transition: opacity 60ms linear;
+}
+}
+
+@layer components {
+  .icon {
+    @apply p-1 hover:bg-gray-200 rounded hover:cursor-default;
+  }
+
+  #WelcomeGsapEffect {
+    @apply text-gray-200 flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none max-sm:hidden;
+  }
+
+  #dock {
+    @apply absolute bottom-5 left-1/2 -translate-x-1/2 z-50 select-none max-sm:hidden;
+
+    .dock-container {
+      @apply bg-white/20 backdrop-blur-md justify-between rounded-2xl p-1.5 flex items-end gap-1.5;
+    }
+
+    .tooltip {
+      @apply !py-1 !px-3 !w-fit !text-center !text-xs !rounded-md !bg-blue-200 !text-blue-900 !shadow-2xl;
+    }
+
+    .dock-icon {
+      @apply size-14 3xl:size-20 cursor-pointer;
+
+      img {
+        @apply object-cover object-center;
+      }
+    }
+  }
+
+  #window-controls {
+    @apply flex gap-2;
+
+    .close {
+      @apply size-3.5 rounded-full bg-[#ff6157] cursor-pointer hover:opacity-85 transition-opacity;
+    }
+
+    .minimize {
+      @apply size-3.5 rounded-full bg-[#ffc030] cursor-pointer hover:opacity-85 transition-opacity;
+    }
+
+    .maximize {
+      @apply size-3.5 rounded-full bg-[#2acb42] cursor-pointer hover:opacity-85 transition-opacity;
+    }
+  }
+
+  #window-header {
+    @apply flex items-center justify-between px-4 py-3 rounded-t-lg bg-gray-50 border-b border-gray-200 select-none text-sm text-gray-400;
+  }
+
+  #safari {
+    @apply w-2xl max-w-[92vw] absolute top-14 left-[20%] bg-[#1e1e1e] shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
+  }
+
+  #terminal {
+    @apply w-2xl max-w-[92vw] absolute top-28 left-[10%] rounded-xl overflow-hidden shadow-2xl border border-[#3a3a3c] bg-[#1e1e1e] text-[#e5e5e5] font-mono text-xs;
+
+    #window-header {
+      @apply bg-[#2d2d2d] border-b border-[#3a3a3c] text-[#d1d5db] px-3.5 py-2;
+    }
+  }
+
+  #contact {
+    @apply w-xl max-w-[92vw] absolute top-24 left-[28%] bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+  }
+
+  #photos {
+    @apply w-2xl max-w-[92vw] absolute top-18 left-[24%] bg-[#1e1e1e] shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
+  }
+
+  #finder {
+    @apply absolute w-2xl max-w-[92vw] left-[15%] top-16 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl bg-[#1e1e1e] border border-[#3a3a3c];
+  }
+
+  #txtfile {
+    @apply w-md max-w-[92vw] absolute top-20 left-[48%] bg-[#1e1e1e] shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
+  }
+
+  #imgfile {
+    @apply w-2xl max-w-[92vw] absolute top-18 left-[22%] bg-[#1e1e1e] shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
+  }
+
+  #resume {
+    @apply w-2xl max-w-[92vw] absolute top-14 left-[18%] bg-[#1e1e1e] shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
+  }
+
+  #home {
+    @apply relative z-0 max-sm:hidden;
+
+    ul {
+      li {
+        @apply absolute z-0 select-none flex items-center flex-col;
+
+        img {
+          @apply group-hover:bg-gray-950/10 p-1 rounded-md;
+        }
+
+        p {
+          @apply text-sm text-white text-center px-1 rounded-md group-hover:bg-blue-500 transition-colors max-w-40;
+        }
+      }
+    }
+  }
+}

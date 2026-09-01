@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient matching macOS Terminal icon -->
+    <linearGradient id="macTerminalBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34373e"/>
+      <stop offset="25%" stop-color="#212328"/>
+      <stop offset="100%" stop-color="#141518"/>
+    </linearGradient>
+
+    <!-- Bezel Border Gradient -->
+    <linearGradient id="macBezel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5a5d66" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#1a1b1f" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <!-- Specular Highlight -->
+    <linearGradient id="topReflection" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Text / Glyph Gradient -->
+    <linearGradient id="glyphGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d8dbdf"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filter -->
+    <filter id="iconShadow" x="-10%" y="-10%" width="120%" height="125%">
+      <feDropShadow dx="0" dy="16" stdDeviation="12" flood-color="#000000" flood-opacity="0.6"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base with Authentic Shadow -->
+  <rect x="36" y="36" width="440" height="440" rx="100" fill="url(#macTerminalBg)" stroke="url(#macBezel)" stroke-width="3.5" filter="url(#iconShadow)"/>
+
+  <!-- Top Glass Highlight Overlay -->
+  <path d="M 38 136 C 38 82, 82 38, 136 38 L 376 38 C 430 38, 474 82, 474 136 L 474 210 L 38 210 Z" fill="url(#topReflection)"/>
+
+  <!-- Inner Screen Border -->
+  <rect x="52" y="52" width="408" height="408" rx="86" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1.5"/>
+
+  <!-- Authentic Apple Terminal Prompt Glyphs: >_ in crisp white -->
+  <!-- Chevron > -->
+  <path d="M 125 185 L 235 256 L 125 327" fill="none" stroke="url(#glyphGrad)" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Underscore _ -->
+  <line x1="268" y1="327" x2="388" y2="327" stroke="url(#glyphGrad)" stroke-width="26" stroke-linecap="round"/>
+</svg>
