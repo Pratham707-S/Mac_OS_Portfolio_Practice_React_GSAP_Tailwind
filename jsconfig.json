@@ -1,0 +1,24 @@
+{
+  // ==============================================================================
+  // jsconfig.json: VS Code IntelliSense & Path Alias Configuration
+  // ==============================================================================
+  // PURPOSE:
+  // 1. Editor ko '#*' import shortcuts samajhne me help karta hai.
+  // 2. Autocomplete aur 'Cmd + Click' (Go to Definition) enable karta hai.
+  // 3. 'Cannot find module' wali red error lines ko hatata hai.
+  //
+  // NOTE: Iske saath vite.config.js me bhi alias configure hona zaroori hai.
+  // ==============================================================================
+
+  "compilerOptions": {
+    "baseUrl": ".", // Root directory starting point
+    "paths": {
+      // "#components/Navbar" ya "src/components/Navbar" ya "@/components/Navbar"
+      "#*": ["src/*"],
+      "src/*": ["src/*"],
+      "@/*": ["src/*"]
+    }
+  },
+  // Sirf src folder ko scan karega (performance fast rehti hai)
+  "include": ["src"]
+}
