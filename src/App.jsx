@@ -1,11 +1,17 @@
 import React from 'react'
 import Navbar from "#components/Navbar.jsx"
+import VideoBackground from "#components/VideoBackground.jsx"
+
+import WelcomeGsapEffect from '#components/WelcomeGsapEffect'
+
 const App = () => {
-  return (
-    <div>
-      <Navbar />
-    </div>
-  )
+    return (
+        <main>
+            <VideoBackground />
+            <Navbar />
+            <WelcomeGsapEffect/>
+        </main>
+    )
 }
 
 export default App
