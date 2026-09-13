@@ -7,10 +7,6 @@ body {
   width: 100dvw;
   overflow: hidden;
   height: 100dvh;
-  background-image: url("/images/wallpaper.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 }
 
 @theme {
@@ -66,7 +62,7 @@ body {
     @apply p-1 hover:bg-gray-200 rounded hover:cursor-default;
   }
 
-  #welcome {
+  #WelcomeGsapEffect {
     @apply text-gray-200 flex flex-col justify-center items-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none max-sm:h-screen max-sm:w-full max-sm:px-10;
 
     .small-screen {
