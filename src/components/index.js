@@ -1,14 +1,5 @@
+import Navbar from '#components/Navbar'
+import WelcomeGsapEffect from '#components/WelcomeGsapEffect'
+import Dock from '#components/Dock'
 
-import {Navbar,WelcomeGsapEffect} from '#components/index'
-
-
-const index = () => {
-  return (
-    <main>
-      <Navbar/>
-      <WelcomeGsapEffect/>
-    </main>
-  )
-}
-
-export default index
+export {Navbar,WelcomeGsapEffect,Dock};
