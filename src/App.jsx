@@ -3,6 +3,7 @@ import Navbar from "#components/Navbar.jsx"
 import VideoBackground from "#components/VideoBackground.jsx"
 
 import WelcomeGsapEffect from '#components/WelcomeGsapEffect'
+import { Dock } from '#components'
 
 const App = () => {
     return (
@@ -10,6 +11,7 @@ const App = () => {
             <VideoBackground />
             <Navbar />
             <WelcomeGsapEffect/>
+            <Dock/>
         </main>
     )
 }
