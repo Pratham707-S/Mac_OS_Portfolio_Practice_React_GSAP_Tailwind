@@ -103,6 +103,7 @@ sequenceDiagram
 │   ├── components/
 │   │   ├── navbar-panels/
 │   │   │   ├── NavbarControlCenterPanel.jsx   # Control Center with sliders & Now Playing
+│   │   │   ├── NavbarWidgetsSidebar.jsx       # Notification Center & Widgets drawer
 │   │   │   ├── NavbarWifiPanel.jsx            # Wi-Fi network selection & toggle
 │   │   │   ├── NavbarUserProfilePanel.jsx     # GitHub profile & iCloud meter
 │   │   │   └── NavbarBluetoothPanel.jsx       # Bluetooth device list
