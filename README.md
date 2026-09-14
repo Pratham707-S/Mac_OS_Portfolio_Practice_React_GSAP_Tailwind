@@ -1,5 +1,14 @@
 #  macOS Portfolio OS — React + GSAP + Tailwind
 
+[![Status](https://img.shields.io/badge/Status-Work%20in%20Progress%20(WIP)-orange?style=for-the-badge&logo=git)](https://github.com/Pratham707-S/Mac_OS_Portfolio_Practice_React_GSAP_Tailwind)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![GSAP](https://img.shields.io/badge/GSAP-3.15-88CE02?style=for-the-badge&logo=greensock&logoColor=white)](https://gsap.com)
+[![Tailwind](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+
+> [!IMPORTANT]
+> **🚧 WORK IN PROGRESS / STILL UNDER ACTIVE DEVELOPMENT**
+> This is a **work-in-progress** macOS portfolio simulation and is not yet a 100% completed project. Features, interactive window applications (Finder, Safari, Terminal), and desktop utilities are actively being built and refined!
+
 An ultra-realistic, interactive macOS-themed portfolio web application built with **React**, **Tailwind CSS**, and **GSAP Animations**. Designed with high-fidelity macOS Sequoia frosted glassmorphism, dynamic audio/brightness controls, and realistic desktop workflows.
 
 ---
