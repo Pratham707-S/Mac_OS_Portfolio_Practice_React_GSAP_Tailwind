@@ -113,8 +113,17 @@ sequenceDiagram
 │   │   ├── WelcomeGsapEffect.jsx              # Welcome text animation
 │   │   ├── Dock.jsx                           # Interactive bottom dock
 │   │   └── index.js                           # Central component exports
+│   ├── hooks/
+│   │   ├── useAudioController.js              # Ambient sound & autoplay hook
+│   │   ├── useSystemBrightness.js             # Display brightness & overlay hook
+│   │   ├── useSystemNotification.js           # Floating toast dispatcher hook
+│   │   └── index.js                           # Central hooks barrel export
+│   ├── utils/
+│   │   └── timeZoneHelper.js                  # World clock rotation & timezone utils
 │   ├── constants/
-│   │   └── index.js                           # Navigation, dock apps, & projects data
+│   │   ├── index.js                           # Navigation, dock apps, & projects data
+│   │   ├── systemAudioConfig.js               # Audio track configurations
+│   │   └── widgetsConfig.js                   # Weather, stocks, and dev report data
 │   ├── App.jsx                                # Root layout and global state
 │   ├── index.css                              # Tailwind & macOS glassmorphism styles
 │   └── main.jsx                               # Application entry point
