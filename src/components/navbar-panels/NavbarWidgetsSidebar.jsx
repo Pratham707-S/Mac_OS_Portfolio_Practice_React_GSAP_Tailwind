@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import dayjs from "dayjs";
+import { calculateClockRotation, WORLD_CITIES } from "../../utils/timeZoneHelper";
 
 export const NavbarWidgetsSidebar = ({ isOpen, onClose }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -16,14 +17,12 @@ export const NavbarWidgetsSidebar = ({ isOpen, onClose }) => {
     if (!isOpen) return;
     const handleOutsideClick = (e) => {
       if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-        // Check if the click was on the clock button
         const isClockClick = e.target.closest("button[title*='Widgets']");
         if (!isClockClick) {
           onClose();
         }
       }
     };
-    // Use timeout so the trigger click doesn't instantly close it
     const timer = setTimeout(() => {
       document.addEventListener("mousedown", handleOutsideClick);
     }, 50);
@@ -34,27 +33,6 @@ export const NavbarWidgetsSidebar = ({ isOpen, onClose }) => {
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
-
-  // Clock hand calculations
-  const getClockRotation = (offsetHours = 0) => {
-    const d = new Date(currentTime.getTime() + offsetHours * 3600000);
-    const hours = d.getUTCHours();
-    const minutes = d.getUTCMinutes();
-    const seconds = d.getUTCSeconds();
-
-    return {
-      hourDeg: (hours % 12) * 30 + minutes * 0.5,
-      minuteDeg: minutes * 6 + seconds * 0.1,
-      secondDeg: seconds * 6,
-    };
-  };
-
-  const cities = [
-    { name: "Cupertino", offset: -7, label: "Today, -12:30" },
-    { name: "Tokyo", offset: 9, label: "Today, +3:30" },
-    { name: "Sydney", offset: 10, label: "Today, +4:30" },
-    { name: "Paris", offset: 2, label: "Today, -3:30" },
-  ];
 
   return createPortal(
     <div
@@ -130,8 +108,8 @@ export const NavbarWidgetsSidebar = ({ isOpen, onClose }) => {
           World Clock
         </span>
         <div className="grid grid-cols-4 gap-2">
-          {cities.map((city) => {
-            const rot = getClockRotation(city.offset);
+          {WORLD_CITIES.map((city) => {
+            const rot = calculateClockRotation(currentTime, city.offset);
             return (
               <div key={city.name} className="flex flex-col items-center text-center">
                 {/* Clock Face */}
