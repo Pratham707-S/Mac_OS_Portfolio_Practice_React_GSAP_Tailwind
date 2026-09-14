@@ -1,4 +1,4 @@
-#  macOS Portfolio OS — React + GSAP + Tailwind
+# macOS Portfolio OS — React + GSAP + Tailwind
 
 [![Status](https://img.shields.io/badge/Status-Work%20in%20Progress%20(WIP)-orange?style=for-the-badge&logo=git)](https://github.com/Pratham707-S/Mac_OS_Portfolio_Practice_React_GSAP_Tailwind)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
@@ -6,31 +6,47 @@
 [![Tailwind](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 
 > [!IMPORTANT]
-> **🚧 WORK IN PROGRESS / STILL UNDER ACTIVE DEVELOPMENT**
-> This is a **work-in-progress** macOS portfolio simulation and is not yet a 100% completed project. Features, interactive window applications (Finder, Safari, Terminal), and desktop utilities are actively being built and refined!
+> **Work in Progress / Active Development**
+> This project is an interactive macOS-themed portfolio web application currently under active development. Core desktop features, window managers (Finder, Safari, Terminal), and interactive components are being incrementally engineered.
 
-An ultra-realistic, interactive macOS-themed portfolio web application built with **React**, **Tailwind CSS**, and **GSAP Animations**. Designed with high-fidelity macOS Sequoia frosted glassmorphism, dynamic audio/brightness controls, and realistic desktop workflows.
+An interactive macOS-themed portfolio web application built with **React**, **Tailwind CSS**, and **GSAP Animations**. Designed with high-fidelity macOS Sequoia frosted glassmorphism, dynamic audio/brightness controls, and desktop simulation workflows.
 
 ---
 
-## 🌟 Key Highlights & Features
+## Key Highlights & Features
 
-- ** Authentic macOS Menubar**: Live ticking clock, Apple system dropdown, portfolio links, and interactive system tray icons.
-- **🎛️ macOS Sequoia Control Center**:
+- **Authentic macOS Menubar**:
+  - Live ticking clock with localized date formatting.
+  - Apple system dropdown with system preferences and lock screen actions.
+  - Interactive status tray items with real-time feedback.
+- **macOS Sequoia Control Center**:
   - 2-Column interactive connectivity grid (Wi-Fi, Bluetooth, AirDrop).
-  - Focus / Do Not Disturb toggle with ambient styling.
-  - Stage Manager & Screen Mirroring pills.
-  - Display Brightness slider that dims/brightens the whole screen in real time.
-  - Sound Volume slider with interactive mute/unmute control.
-  - **Now Playing Media Widget** with animated audio equalizer waves and Play/Pause controls.
-- **🔊 Live Ambient Video Audio**: Background video sound is dynamically controlled by the Control Center Sound slider.
-- **⚡ Snappy macOS Notification Toasts**: Native macOS-style floating banners for simulated features with automatic 1.3s slide-in/out transitions.
-- **👤 GitHub-Powered Apple Account Modal**: Pulls live GitHub avatar, bio, repository count, and follower stats, accompanied by an iCloud+ segmented storage bar.
-- **🚀 Dynamic Dock & Windows**: Interactive macOS dock with GSAP hover scale animations.
+  - Focus / Do Not Disturb state toggles.
+  - Stage Manager and Screen Mirroring simulation controls.
+  - Display Brightness slider that dims the viewport in real time.
+  - Sound Volume slider with mute/unmute toggle.
+  - Now Playing media card with animated equalizer waves and playback controls.
+- **Notification Center & Widgets Sidebar**:
+  - Full-height React Portal drawer triggered via menubar clock.
+  - Interactive live calendar widget displaying current day and scheduled milestones.
+  - Cupertino weather forecast widget.
+  - 4-city real-time analog world clocks (Cupertino, Tokyo, Sydney, Paris).
+  - Financial/tech stock ticker widget.
+- **Ambient Audio Controller**:
+  - Video wallpaper soundtrack with initial soft ambient volume level.
+  - Automatic interaction unlocking complying with modern browser autoplay policies.
+- **System Toast Notifications**:
+  - Native floating macOS toast notifications for simulated features.
+  - Automatic timed entry and exit slide animations.
+- **User Profile Modal**:
+  - Real-time GitHub REST API integration for user avatar, bio, and repository counts.
+  - Segmented visual iCloud+ storage utilization bar.
+- **Dynamic Dock**:
+  - Fluid magnification physics powered by GSAP.
 
 ---
 
-## 📐 Architecture & System Flow
+## Architecture & System Flow
 
 ### 1. High-Level Architecture
 
@@ -59,13 +75,14 @@ graph TD
         WifiPanel[NavbarWifiPanel.jsx]
         UserPanel[NavbarUserProfilePanel.jsx]
         ControlCenter[NavbarControlCenterPanel.jsx]
+        WidgetsSidebar[NavbarWidgetsSidebar.jsx]
     end
 
     App --> B & V & P & N
     B --> Overlay
     V & P --> Vid
     N --> Toast
-    App --> Nav --> AppleMenu & WifiPanel & UserPanel & ControlCenter
+    App --> Nav --> AppleMenu & WifiPanel & UserPanel & ControlCenter & WidgetsSidebar
     App --> Welcome
     App --> DockBar
 ```
@@ -90,9 +107,9 @@ sequenceDiagram
 
     User->>CC: Adjusts Brightness Slider
     CC->>App: setBrightness(newBrightness)
-    App->>Overlay: Updates --system-brightness CSS variable
+    App->>Overlay: Updates dimmer overlay opacity
 
-    User->>CC: Clicks Demo Feature (e.g. AirDrop / Bluetooth)
+    User->>CC: Clicks Simulated Feature (e.g. AirDrop / Bluetooth)
     CC->>App: showNotification(title, message)
     App->>Toast: Mounts toast
     Toast-->>User: Slides in (1.3s auto timer)
@@ -101,12 +118,12 @@ sequenceDiagram
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ├── public/
-│   ├── icons/                  # SVG icons (wifi, user, mode, etc.)
-│   ├── images/                 # App images and wallpapers
+│   ├── icons/                  # SVG system icons (wifi, user, mode, etc.)
+│   ├── images/                 # App assets, wallpapers, and icons
 │   └── video-background/       # Background video loop
 ├── src/
 │   ├── components/
@@ -133,7 +150,7 @@ sequenceDiagram
 │   │   ├── index.js                           # Navigation, dock apps, & projects data
 │   │   ├── systemAudioConfig.js               # Audio track configurations
 │   │   └── widgetsConfig.js                   # Weather, stocks, and dev report data
-│   ├── App.jsx                                # Root layout and global state
+│   ├── App.jsx                                # Root layout and global state orchestration
 │   ├── index.css                              # Tailwind & macOS glassmorphism styles
 │   └── main.jsx                               # Application entry point
 ├── package.json
@@ -142,17 +159,17 @@ sequenceDiagram
 
 ---
 
-## 💻 Tech Stack
+## Tech Stack
 
 - **Framework**: React 19 + Vite
 - **Styling**: Tailwind CSS v4 + Vanilla CSS Glassmorphism
 - **Animation**: GSAP (GreenSock Animation Platform)
-- **Icons & Assets**: Custom SVG icons & SF Pro typography
+- **Typography & Icons**: Custom SVG icons with native SF Pro system fonts
 - **Data Integration**: GitHub REST API
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -173,11 +190,11 @@ npm install
 npm run dev
 ```
 
-The app will start at `http://localhost:5173/`.
+The application will start at `http://localhost:5173/`.
 
 ---
 
-## 👤 Author
+## Author
 
 **Pratham**
 - GitHub: [@Pratham707-S](https://github.com/Pratham707-S)
