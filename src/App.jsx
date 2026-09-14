@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from "#components/Navbar.jsx";
 import VideoBackground from "#components/VideoBackground.jsx";
 import WelcomeGsapEffect from '#components/WelcomeGsapEffect';
 import { Dock } from '#components';
 import { MacNotification } from '#components/MacNotification.jsx';
+import {
+  useAudioController,
+  useSystemBrightness,
+  useSystemNotification,
+} from './hooks';
 
 const App = () => {
-    const [brightness, setBrightness] = useState(100);
-    const [volume, setVolume] = useState(25); // Starts at soft 25% ambient volume
-    const [isPlaying, setIsPlaying] = useState(true);
-    const [notification, setNotification] = useState(null);
-
-    const showNotification = (title, message) => {
-        setNotification({ title, message, id: Date.now() });
-    };
+    const { brightness, setBrightness, overlayOpacity } = useSystemBrightness(100);
+    const { volume, setVolume, isPlaying, setIsPlaying } = useAudioController(25);
+    const { notification, showNotification, clearNotification } = useSystemNotification();
 
     return (
         <main className="relative w-screen h-screen overflow-hidden">
             {/* Real-time Display Brightness Dimmer Overlay */}
             <div
                 className="screen-brightness-overlay"
-                style={{ opacity: (100 - brightness) / 125 }}
+                style={{ opacity: overlayOpacity }}
             />
 
             {/* macOS System Notification Toast */}
             <MacNotification
                 notification={notification}
-                onClose={() => setNotification(null)}
+                onClose={clearNotification}
             />
 
             <VideoBackground volume={volume} isPlaying={isPlaying} />
