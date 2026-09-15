@@ -79,7 +79,7 @@ const blogPosts = [
     id: 1,
     date: "Published on Medium",
     title: "Understanding How Access and Refresh Tokens Work",
-    image: "/images/blog1.png",
+    image: "/images/jwt-token.jpg",
     link: "https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f",
   },
 ];
