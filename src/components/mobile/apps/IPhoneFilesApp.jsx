@@ -381,7 +381,11 @@ export const IPhoneFilesApp = ({
               <div className="grid grid-cols-2 gap-2">
                 <a
                   href={`mailto:${resumeData.personalInfo.email}`}
-                  className="p-3 bg-[#007aff] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-transform"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(`mailto:${resumeData.personalInfo.email}`, "_blank");
+                  }}
+                  className="p-3 bg-[#007aff] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-transform select-none"
                 >
                   <Mail size={14} />
                   <span>Email</span>
@@ -390,7 +394,11 @@ export const IPhoneFilesApp = ({
                   href={resumeData.personalInfo.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3 bg-[#0077b5] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-transform"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    window.open(resumeData.personalInfo.linkedin, "_blank", "noopener,noreferrer");
+                  }}
+                  className="p-3 bg-[#0077b5] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 transition-transform select-none"
                 >
                   <ExternalLink size={14} />
                   <span>LinkedIn</span>

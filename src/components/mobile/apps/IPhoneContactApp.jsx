@@ -172,7 +172,11 @@ export const IPhoneContactApp = ({ currentTime, isOpen, onClose, isDarkMode }) =
             href={resumeData.personalInfo.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full p-4 rounded-[16px] bg-[#0077b5] hover:bg-[#006ca4] active:scale-[0.98] transition-all text-white flex flex-col justify-between shadow-sm cursor-pointer min-h-[76px] shrink-0"
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(resumeData.personalInfo.linkedin, "_blank", "noopener,noreferrer");
+            }}
+            className="w-full p-4 rounded-[16px] bg-[#0077b5] hover:bg-[#006ca4] active:scale-[0.98] transition-all text-white flex flex-col justify-between shadow-sm cursor-pointer min-h-[76px] shrink-0 select-none"
           >
             <div className="flex items-center">
               <svg

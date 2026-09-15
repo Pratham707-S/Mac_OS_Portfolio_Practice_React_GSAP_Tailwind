@@ -230,9 +230,13 @@ export const IPhonePhotosApp = ({ currentTime, isOpen, onClose, isDarkMode }) =>
                 href={selectedPhoto.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(selectedPhoto.link, "_blank", "noopener,noreferrer");
+                }}
                 className={`px-5 py-2.5 ${
                   selectedPhoto.buttonBg || "bg-[#007aff]"
-                } text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg active:scale-95 transition-transform`}
+                } text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg active:scale-95 transition-transform select-none cursor-pointer`}
               >
                 <span>{selectedPhoto.buttonText || "View Live Project"}</span>
                 <ExternalLink size={13} />
