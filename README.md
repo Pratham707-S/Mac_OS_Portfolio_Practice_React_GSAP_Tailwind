@@ -1,5 +1,6 @@
 # macOS & iOS Portfolio Operating System
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-macos--portfolio.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://macos-portfolio-phi-ruby.vercel.app/)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Pratham707-S/Mac_OS_Portfolio_Practice_React_GSAP_Tailwind)
 
 A web-based simulation of macOS Sequoia for desktop computers and iOS 18 for mobile devices, built with React 19, Tailwind CSS v4, and GSAP. This project delivers an operating system experience directly in the browser, featuring draggable windows, a desktop dock with magnification physics, a terminal command parser with Easter eggs, a synchronized lyrics music player, and structured project case studies.
