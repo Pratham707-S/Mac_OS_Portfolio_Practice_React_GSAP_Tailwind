@@ -4,12 +4,13 @@ import { Volume2, VolumeX } from "lucide-react";
 const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
     const videoRef = useRef(null);
     const volumeRef = useRef(volume);
+    const isPlayingRef = useRef(isPlaying);
     const [isAudible, setIsAudible] = useState(false);
     const [showUnmuteHint, setShowUnmuteHint] = useState(true);
     const audiblePlayStartTime = useRef(null);
     const hasFinishedAudibleCycle = useRef(false);
 
-    // Keep volumeRef in sync
+    // Keep refs in sync with props
     useEffect(() => {
         volumeRef.current = volume;
         if (volume === 0) {
@@ -17,7 +18,19 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
         }
     }, [volume]);
 
-    // Initial audio attempt and global unlock on first interaction
+    useEffect(() => {
+        isPlayingRef.current = isPlaying;
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (!isPlaying) {
+            video.pause();
+        } else {
+            video.play().catch(() => {});
+        }
+    }, [isPlaying]);
+
+    // Initial audio setup and unlock on first interaction
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
@@ -25,32 +38,35 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
         const initialVol = Math.max(0, Math.min(100, volumeRef.current || 35)) / 100;
         video.volume = initialVol;
 
-        // Try direct playback with sound
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-            playPromise
-                .then(() => {
-                    // Browser allowed autoplay with sound!
-                    if (!video.muted && video.volume > 0) {
-                        setIsAudible(true);
-                        setShowUnmuteHint(false);
-                        audiblePlayStartTime.current = Date.now();
-                    }
-                })
-                .catch(() => {
-                    // Browser blocked unmuted autoplay -> mute initially so video keeps playing
-                    video.muted = true;
-                    video.play().catch(() => {});
-                    setIsAudible(false);
-                    setShowUnmuteHint(true);
-                });
+        // Try direct playback if isPlaying is true
+        if (isPlayingRef.current) {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        // Browser allowed unmuted autoplay
+                        if (!video.muted && video.volume > 0) {
+                            setIsAudible(true);
+                            setShowUnmuteHint(false);
+                            audiblePlayStartTime.current = Date.now();
+                        }
+                    })
+                    .catch(() => {
+                        // Browser blocked unmuted autoplay -> mute to start video
+                        video.muted = true;
+                        if (isPlayingRef.current) {
+                            video.play().catch(() => {});
+                        }
+                        setIsAudible(false);
+                        setShowUnmuteHint(true);
+                    });
+            }
         }
 
-        // Global unlock listener: unmute and play with sound as soon as visitor clicks/touches anywhere
+        // Global unlock listener: unmute and play with sound only if NOT paused
         const unlockAudio = () => {
             const vid = videoRef.current;
             if (vid && !hasFinishedAudibleCycle.current) {
-                // Resume AudioContext if suspended (WebKit / Safari / Chrome)
                 try {
                     const AudioCtx = window.AudioContext || window.webkitAudioContext;
                     if (AudioCtx) {
@@ -63,11 +79,17 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
                 const targetVol = Math.max(0, Math.min(100, volumeRef.current || 35));
                 vid.volume = targetVol / 100;
                 setVolume?.(targetVol);
-                vid.play().then(() => {
-                    setIsAudible(true);
-                    setShowUnmuteHint(false);
-                    audiblePlayStartTime.current = Date.now();
-                }).catch(() => {});
+
+                // Only call play() if the user has NOT explicitly paused the video
+                if (isPlayingRef.current) {
+                    vid.play().then(() => {
+                        setIsAudible(true);
+                        setShowUnmuteHint(false);
+                        audiblePlayStartTime.current = Date.now();
+                    }).catch(() => {});
+                } else {
+                    vid.pause();
+                }
             }
 
             window.removeEventListener("click", unlockAudio);
@@ -89,12 +111,12 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
         };
     }, [setVolume]);
 
-    // Track 1 full audible cycle: only starts countdown AFTER the audio is actively playing unmuted
+    // Track 1 full audible cycle: only countdown while audio is actively playing
     const handleTimeUpdate = () => {
         const video = videoRef.current;
-        if (!video || !isAudible || hasFinishedAudibleCycle.current) return;
+        if (!video || !isAudible || hasFinishedAudibleCycle.current || !isPlayingRef.current) return;
 
-        // Ensure audio has played for at least 12-14 seconds (one full video duration) before auto-muting
+        // Ensure audio has played for 14 seconds before auto-muting
         if (audiblePlayStartTime.current && (Date.now() - audiblePlayStartTime.current >= 14000)) {
             hasFinishedAudibleCycle.current = true;
             video.muted = true;
@@ -102,18 +124,6 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
             setVolume?.(0);
         }
     };
-
-    // Handle isPlaying prop changes
-    useEffect(() => {
-        const video = videoRef.current;
-        if (!video) return;
-
-        if (isPlaying) {
-            video.play().catch(() => {});
-        } else {
-            video.pause();
-        }
-    }, [isPlaying]);
 
     // Handle Volume prop changes
     useEffect(() => {
@@ -126,19 +136,19 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
             video.muted = true;
             setIsAudible(false);
         } else {
-            // User manually raised volume in Control Center -> reset cycle flag and enable audio
             hasFinishedAudibleCycle.current = false;
             video.muted = false;
             setIsAudible(true);
             setShowUnmuteHint(false);
             audiblePlayStartTime.current = Date.now();
-            if (isPlaying) {
+            // Strictly check isPlaying before playing
+            if (isPlayingRef.current) {
                 video.play().catch(() => {});
             }
         }
-    }, [volume, isPlaying]);
+    }, [volume]);
 
-    // Explicit manual click handler on the badge
+    // Manual click on sound pill badge
     const handleManualUnmute = (e) => {
         e.stopPropagation();
         const vid = videoRef.current;
@@ -147,11 +157,13 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
             const targetVol = Math.max(0, Math.min(100, volumeRef.current || 35));
             vid.volume = targetVol / 100;
             setVolume?.(targetVol);
-            vid.play().then(() => {
-                setIsAudible(true);
-                setShowUnmuteHint(false);
-                audiblePlayStartTime.current = Date.now();
-            }).catch(() => {});
+            if (isPlayingRef.current) {
+                vid.play().then(() => {
+                    setIsAudible(true);
+                    setShowUnmuteHint(false);
+                    audiblePlayStartTime.current = Date.now();
+                }).catch(() => {});
+            }
         }
     };
 
@@ -159,7 +171,7 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
         <>
             <video
                 ref={videoRef}
-                autoPlay
+                autoPlay={isPlaying}
                 loop
                 muted={volume === 0 || !isAudible}
                 playsInline
@@ -169,8 +181,8 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
                 <source src="/video-background/PinGrab_1789291718783.mp4" type="video/mp4" />
             </video>
 
-            {/* Subtle macOS Glass Audio Pill Badge (Auto-hides on first click or when playing) */}
-            {showUnmuteHint && !isAudible && (
+            {/* Subtle macOS Glass Audio Pill Badge */}
+            {showUnmuteHint && !isAudible && isPlaying && (
                 <button
                     type="button"
                     onClick={handleManualUnmute}
