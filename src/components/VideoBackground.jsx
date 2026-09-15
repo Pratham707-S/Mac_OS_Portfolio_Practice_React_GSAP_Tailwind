@@ -1,78 +1,87 @@
 import React, { useRef, useEffect } from "react";
 
-const VideoBackground = ({ volume = 20, setVolume, isPlaying = true }) => {
+const VideoBackground = ({ volume = 25, setVolume, isPlaying = true }) => {
     const videoRef = useRef(null);
-    const hasAutoMutedAfterFirstPlay = useRef(false);
+    const volumeRef = useRef(volume);
 
-    // Initial audio setup and unlock on first user interaction
+    // Keep volumeRef in sync
+    useEffect(() => {
+        volumeRef.current = volume;
+    }, [volume]);
+
+    // Initial audio setup and unlock on first user interaction anywhere on screen
     useEffect(() => {
         const video = videoRef.current;
         if (!video) return;
 
-        const initialVol = Math.max(0, Math.min(100, volume)) / 100;
-        video.volume = initialVol;
+        const currentVol = Math.max(0, Math.min(100, volumeRef.current || 25));
+        video.volume = currentVol / 100;
 
-        // Attempt direct play with audio
-        video.play().catch(() => {
-            // If browser blocks unmuted autoplay, mute initially so video keeps playing
-            video.muted = true;
-            video.play().catch(() => {});
+        // Try direct playback
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(() => {
+                // Browser blocked unmuted autoplay policy -> temporarily mute to start video
+                video.muted = true;
+                video.play().catch(() => {});
+            });
+        }
 
-            // Auto-unmute on first user touch/click anywhere on page
-            const handleFirstInteraction = () => {
-                if (videoRef.current && volume > 0 && !hasAutoMutedAfterFirstPlay.current) {
-                    videoRef.current.muted = false;
-                    videoRef.current.volume = volume / 100;
-                    videoRef.current.play().catch(() => {});
+        // Global unlock listener: unmute and play with sound on first interaction
+        const unlockAudio = () => {
+            const vid = videoRef.current;
+            if (vid) {
+                vid.muted = false;
+                const activeVol = Math.max(0, Math.min(100, volumeRef.current || 25));
+                vid.volume = activeVol / 100;
+                if (isPlaying) {
+                    vid.play().catch(() => {});
                 }
-                window.removeEventListener("click", handleFirstInteraction);
-                window.removeEventListener("keydown", handleFirstInteraction);
-                window.removeEventListener("touchstart", handleFirstInteraction);
-            };
+            }
+            window.removeEventListener("click", unlockAudio);
+            window.removeEventListener("touchstart", unlockAudio);
+            window.removeEventListener("pointerdown", unlockAudio);
+            window.removeEventListener("keydown", unlockAudio);
+        };
 
-            window.addEventListener("click", handleFirstInteraction, { once: true });
-            window.addEventListener("keydown", handleFirstInteraction, { once: true });
-            window.addEventListener("touchstart", handleFirstInteraction, { once: true });
-        });
+        window.addEventListener("click", unlockAudio, { once: true });
+        window.addEventListener("touchstart", unlockAudio, { once: true });
+        window.addEventListener("pointerdown", unlockAudio, { once: true });
+        window.addEventListener("keydown", unlockAudio, { once: true });
+
+        return () => {
+            window.removeEventListener("click", unlockAudio);
+            window.removeEventListener("touchstart", unlockAudio);
+            window.removeEventListener("pointerdown", unlockAudio);
+            window.removeEventListener("keydown", unlockAudio);
+        };
     }, []);
 
-    // Monitor playback: after 1 full video cycle (~15s), automatically mute audio while video keeps looping
-    const handleTimeUpdate = () => {
-        const video = videoRef.current;
-        if (!video || hasAutoMutedAfterFirstPlay.current) return;
-
-        if (video.duration && video.currentTime >= video.duration - 0.4) {
-            hasAutoMutedAfterFirstPlay.current = true;
-            video.muted = true;
-            setVolume?.(0);
-        }
-    };
-
-    // Handle isPlaying changes
+    // Handle isPlaying prop changes
     useEffect(() => {
-        if (videoRef.current) {
-            if (isPlaying) {
-                videoRef.current.play().catch(() => {});
-            } else {
-                videoRef.current.pause();
-            }
+        const video = videoRef.current;
+        if (!video) return;
+
+        if (isPlaying) {
+            video.play().catch(() => {});
+        } else {
+            video.pause();
         }
     }, [isPlaying]);
 
-    // Handle Volume changes
+    // Handle Volume prop changes
     useEffect(() => {
-        if (videoRef.current) {
-            const val = Math.max(0, Math.min(100, volume));
-            videoRef.current.volume = val / 100;
-            if (val === 0) {
-                videoRef.current.muted = true;
-            } else {
-                // If user actively changed volume above 0, reset flag to allow audio
-                hasAutoMutedAfterFirstPlay.current = false;
-                videoRef.current.muted = false;
-                if (isPlaying) {
-                    videoRef.current.play().catch(() => {});
-                }
+        const video = videoRef.current;
+        if (!video) return;
+
+        const val = Math.max(0, Math.min(100, volume));
+        video.volume = val / 100;
+        if (val === 0) {
+            video.muted = true;
+        } else {
+            video.muted = false;
+            if (isPlaying) {
+                video.play().catch(() => {});
             }
         }
     }, [volume, isPlaying]);
@@ -84,7 +93,6 @@ const VideoBackground = ({ volume = 20, setVolume, isPlaying = true }) => {
             loop
             muted={volume === 0}
             playsInline
-            onTimeUpdate={handleTimeUpdate}
             className="fixed top-0 left-0 w-full h-full object-cover -z-10"
         >
             <source src="/video-background/PinGrab_1789291718783.mp4" type="video/mp4" />
