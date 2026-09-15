@@ -388,21 +388,22 @@ const Finder = () => {
             <>
               {filteredItems.map((item, idx) => {
                 const isFolder = item.kind === 'folder';
-                const posClass =
-                  item.position ||
-                  (idx === 0
-                    ? 'top-8 left-8'
-                    : idx === 1
-                    ? 'top-8 left-64'
-                    : idx === 2
-                    ? 'top-48 left-8'
-                    : 'top-48 left-64');
+                const slots = [
+                  { top: '12%', left: '10%' },
+                  { top: '12%', left: '55%' },
+                  { top: '52%', left: '10%' },
+                  { top: '52%', left: '55%' },
+                  { top: '32%', left: '32%' },
+                  { top: '70%', left: '32%' },
+                ];
+                const slotStyle = slots[idx % slots.length];
 
                 return (
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className={`finder-draggable-item absolute ${posClass} group flex flex-col items-center justify-center p-2 rounded-xl hover:bg-white/10 cursor-pointer transition-colors text-center w-36`}
+                    style={slotStyle}
+                    className="finder-draggable-item absolute group flex flex-col items-center justify-center p-2 rounded-xl hover:bg-white/10 cursor-pointer transition-colors text-center w-32 select-none"
                   >
                     {/* Delete button when viewing Trash */}
                     {currentLocationKey === 'trash' && (
@@ -459,7 +460,7 @@ const Finder = () => {
                     </div>
 
                     {/* File / Folder Name */}
-                    <span className="text-xs font-medium text-gray-200 group-hover:text-white leading-tight max-w-[130px] break-words line-clamp-2 select-none pointer-events-none">
+                    <span className="text-xs font-medium text-gray-200 group-hover:text-white leading-tight max-w-[120px] break-words line-clamp-2 select-none pointer-events-none">
                       {item.name}
                     </span>
                   </div>
