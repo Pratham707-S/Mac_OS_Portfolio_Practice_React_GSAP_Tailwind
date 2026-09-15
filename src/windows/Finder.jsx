@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import WindowWrapper from '#hoc/WindowWrapper.jsx';
 import WindowControls from '#components/WindowControls';
 import { locations } from '#constants';
 import useWindowStore from '#store/window';
+import gsap from 'gsap';
+import { Draggable } from 'gsap/Draggable';
+gsap.registerPlugin(Draggable);
+
 import {
   ChevronLeft,
   ChevronRight,
@@ -24,6 +28,9 @@ const Finder = () => {
 
   // Interactive Trash state
   const [trashList, setTrashList] = useState(locations.trash.children || []);
+
+  // Canvas Ref for Draggable
+  const canvasRef = useRef(null);
 
   // Synchronize when opened from Dock via trash icon or custom data
   useEffect(() => {
@@ -54,6 +61,30 @@ const Finder = () => {
   const filteredItems = displayItems.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Initialize GSAP Draggable on folders & files
+  useEffect(() => {
+    if (!canvasRef.current || currentLocationKey === 'about') return;
+
+    const elements = canvasRef.current.querySelectorAll('.finder-draggable-item');
+    if (elements.length === 0) return;
+
+    const draggables = Draggable.create(elements, {
+      bounds: canvasRef.current,
+      edgeResistance: 0.85,
+      type: 'x,y',
+      zIndexBoost: true,
+      cursor: 'grab',
+      activeCursor: 'grabbing',
+      onPress: function (e) {
+        e.stopPropagation();
+      },
+    });
+
+    return () => {
+      draggables.forEach((d) => d.kill());
+    };
+  }, [currentLocationKey, activeFolder, filteredItems.length]);
 
   // Navigation handlers
   const navigateToLocation = (locKey) => {
@@ -215,7 +246,7 @@ const Finder = () => {
                     : 'text-gray-300 hover:bg-white/10'
                 }`}
               >
-                <User size={13} className="text-emerald-400 flex-none" />
+                <User size={13} className="text-sky-400 flex-none" />
                 <span>About me</span>
               </li>
 
@@ -227,7 +258,7 @@ const Finder = () => {
                     : 'text-gray-300 hover:bg-white/10'
                 }`}
               >
-                <FileText size={13} className="text-amber-400 flex-none" />
+                <FileText size={13} className="text-sky-400 flex-none" />
                 <span>Resume</span>
               </li>
 
@@ -240,7 +271,7 @@ const Finder = () => {
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Trash2 size={13} className="text-rose-400 flex-none" />
+                  <Trash2 size={13} className="text-sky-400 flex-none" />
                   <span>Trash</span>
                 </div>
                 {trashList.length > 0 && (
@@ -287,10 +318,13 @@ const Finder = () => {
         </aside>
 
         {/* Right Main Content Canvas */}
-        <main className="flex-1 p-6 bg-[#1c1c1e] overflow-y-auto">
+        <main
+          ref={canvasRef}
+          className="flex-1 p-6 bg-[#1c1c1e] overflow-hidden relative min-h-[340px]"
+        >
           {/* About Me View (Matching Figma Screenshot 5) */}
           {currentLocationKey === 'about' ? (
-            <div className="max-w-xl mx-auto py-2">
+            <div className="max-w-xl mx-auto py-2 overflow-y-auto max-h-[320px]">
               <div className="flex items-center gap-3.5 mb-4">
                 <img
                   src="/images/pratham.jpg"
@@ -327,7 +361,7 @@ const Finder = () => {
               </div>
             </div>
           ) : (
-            /* Clean Grid Layout (Matching Figma Screenshot 1 & 2) */
+            /* Draggable Grid Layout */
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 p-2">
               {filteredItems.map((item) => {
                 const isFolder = item.kind === 'folder';
@@ -336,7 +370,7 @@ const Finder = () => {
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="group flex flex-col items-center justify-center p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-all duration-200 text-center"
+                    className="finder-draggable-item relative group flex flex-col items-center justify-center p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-colors text-center select-none"
                   >
                     {/* Delete button when viewing Trash */}
                     {currentLocationKey === 'trash' && (
@@ -351,7 +385,7 @@ const Finder = () => {
                     )}
 
                     {/* Icon display */}
-                    <div className="relative w-14 h-14 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-200">
+                    <div className="relative w-14 h-14 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-200 pointer-events-none">
                       {isFolder ? (
                         <img
                           src="/images/folder.png"
@@ -393,7 +427,7 @@ const Finder = () => {
                     </div>
 
                     {/* File / Folder Name */}
-                    <span className="text-xs font-medium text-gray-200 group-hover:text-white leading-tight max-w-[120px] break-words line-clamp-2">
+                    <span className="text-xs font-medium text-gray-200 group-hover:text-white leading-tight max-w-[120px] break-words line-clamp-2 pointer-events-none select-none">
                       {item.name}
                     </span>
                   </div>
