@@ -64,14 +64,18 @@ const Dock = () => {
     const toggleApp = (app) => {
        if(!app.canOpen) return;
        
+       if (app.id === 'trash') {
+         openWindow('finder', { location: 'trash' });
+         return;
+       }
+
        const window = windows[app.id];
 
        if(window.isOpen){
-        closeWindow(app.id)
+        closeWindow(app.id);
        }else{
         openWindow(app.id);
        }
-        
      };
 
     return (

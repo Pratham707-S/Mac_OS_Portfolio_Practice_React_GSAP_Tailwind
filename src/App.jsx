@@ -8,7 +8,16 @@ import gsap from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 gsap.registerPlugin(Draggable);
 
-import { Terminal, Contact, Photos, Safari, Finder } from '#windows';
+import {
+  Terminal,
+  Contact,
+  Photos,
+  Safari,
+  Finder,
+  TxtFile,
+  ImgFile,
+  Resume,
+} from '#windows';
 import {
   useAudioController,
   useSystemBrightness,
@@ -51,6 +60,9 @@ const App = () => {
             <Photos />
             <Safari />
             <Finder />
+            <TxtFile />
+            <ImgFile />
+            <Resume />
         </main>
     );
 };

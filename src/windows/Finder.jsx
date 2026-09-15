@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WindowWrapper from '#hoc/WindowWrapper.jsx';
 import WindowControls from '#components/WindowControls';
 import { locations } from '#constants';
@@ -13,22 +13,31 @@ import {
   Trash2,
   ExternalLink,
   X,
-  FileCode,
-  Globe,
-  Image as ImageIcon,
-  Eye,
+  RotateCcw,
+  Sparkles,
 } from 'lucide-react';
 
 const Finder = () => {
-  const { openWindow } = useWindowStore();
+  const { openWindow, windows } = useWindowStore();
   const [currentLocationKey, setCurrentLocationKey] = useState('work');
-  const [activeFolder, setActiveFolder] = useState(null); // Inside a specific project folder
+  const [activeFolder, setActiveFolder] = useState(null);
   const [history, setHistory] = useState(['work']);
   const [historyIndex, setHistoryIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Interactive Trash state
+  const [trashList, setTrashList] = useState(locations.trash.children || []);
+
   // File Preview Modal State
   const [previewFile, setPreviewFile] = useState(null);
+
+  // Synchronize when opened from Dock via trash icon or custom data
+  useEffect(() => {
+    const requestedLoc = windows.finder?.data?.location;
+    if (requestedLoc && requestedLoc !== currentLocationKey) {
+      navigateToLocation(requestedLoc);
+    }
+  }, [windows.finder?.data?.location]);
 
   const currentLocation = locations[currentLocationKey] || locations.work;
 
@@ -66,6 +75,20 @@ const Finder = () => {
     }
   };
 
+  // Trash actions
+  const handleEmptyTrash = () => {
+    setTrashList([]);
+  };
+
+  const handleRestoreTrash = () => {
+    setTrashList(locations.trash.children || []);
+  };
+
+  const handleDeleteItemFromTrash = (e, id) => {
+    e.stopPropagation();
+    setTrashList((prev) => prev.filter((item) => item.id !== id));
+  };
+
   // Handle File Click
   const handleItemClick = (item) => {
     if (item.kind === 'folder') {
@@ -74,6 +97,10 @@ const Finder = () => {
       window.open(item.href, '_blank');
     } else if (item.fileType === 'pdf') {
       openWindow('resume');
+    } else if (item.fileType === 'txt') {
+      openWindow('txtfile', item);
+    } else if (item.fileType === 'img') {
+      openWindow('imgfile', item);
     } else {
       setPreviewFile(item);
     }
@@ -87,6 +114,8 @@ const Finder = () => {
     } else {
       displayItems = currentLocation.children || [];
     }
+  } else if (currentLocationKey === 'trash') {
+    displayItems = trashList;
   } else {
     displayItems = currentLocation.children || [];
   }
@@ -142,16 +171,44 @@ const Finder = () => {
           </span>
         </div>
 
-        {/* Right Search Input */}
-        <div className="flex items-center gap-2 bg-[#1e1e1e] border border-white/10 px-2.5 py-1 rounded-lg text-xs w-44 shadow-inner">
-          <Search size={12} className="text-gray-400 flex-none" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search"
-            className="w-full bg-transparent outline-none border-none p-0 text-xs placeholder:text-gray-400 text-gray-200"
-          />
+        {/* Center / Right Actions */}
+        <div className="flex items-center gap-3">
+          {/* Empty Trash Button in Trash View */}
+          {currentLocationKey === 'trash' && (
+            <div className="flex items-center gap-2">
+              {trashList.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={handleEmptyTrash}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-rose-600/80 hover:bg-rose-600 text-white text-[11px] font-semibold transition-colors shadow-sm"
+                >
+                  <Trash2 size={11} />
+                  <span>Empty Trash</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleRestoreTrash}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-blue-600/80 hover:bg-blue-600 text-white text-[11px] font-semibold transition-colors shadow-sm"
+                >
+                  <RotateCcw size={11} />
+                  <span>Reset Trash</span>
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Search Input */}
+          <div className="flex items-center gap-2 bg-[#1e1e1e] border border-white/10 px-2.5 py-1 rounded-lg text-xs w-40 shadow-inner">
+            <Search size={12} className="text-gray-400 flex-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search"
+              className="w-full bg-transparent outline-none border-none p-0 text-xs placeholder:text-gray-400 text-gray-200"
+            />
+          </div>
         </div>
       </div>
 
@@ -202,14 +259,21 @@ const Finder = () => {
 
               <li
                 onClick={() => navigateToLocation('trash')}
-                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                   currentLocationKey === 'trash'
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-gray-300 hover:bg-white/10'
                 }`}
               >
-                <Trash2 size={14} className="text-rose-400 flex-none" />
-                <span>Trash</span>
+                <div className="flex items-center gap-2">
+                  <Trash2 size={14} className="text-rose-400 flex-none" />
+                  <span>Trash</span>
+                </div>
+                {trashList.length > 0 && (
+                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 text-white font-mono">
+                    {trashList.length}
+                  </span>
+                )}
               </li>
             </ul>
           </div>
@@ -252,7 +316,7 @@ const Finder = () => {
 
         {/* Right Main Finder Content Area */}
         <main className="flex-1 p-6 overflow-y-auto bg-[#1c1c1e]">
-          {/* About Me Special View (matching Figma Screenshot 5) */}
+          {/* About Me Special View */}
           {currentLocationKey === 'about' ? (
             <div className="max-w-xl mx-auto py-4">
               <div className="flex items-center gap-4 mb-6">
@@ -291,7 +355,7 @@ const Finder = () => {
               </div>
             </div>
           ) : (
-            /* Standard Grid Icon Layout (matching Figma Screenshot 1 & 2) */
+            /* Standard Grid Icon Layout */
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 p-2">
               {filteredItems.map((item) => {
                 const isFolder = item.kind === 'folder';
@@ -300,8 +364,20 @@ const Finder = () => {
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className="group flex flex-col items-center justify-center p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-all duration-200 text-center"
+                    className="relative group flex flex-col items-center justify-center p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-all duration-200 text-center"
                   >
+                    {/* Delete button when viewing Trash */}
+                    {currentLocationKey === 'trash' && (
+                      <button
+                        type="button"
+                        onClick={(e) => handleDeleteItemFromTrash(e, item.id)}
+                        title="Delete permanently"
+                        className="absolute top-1 right-1 p-1 rounded-full bg-rose-500/80 hover:bg-rose-600 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                      >
+                        <X size={10} />
+                      </button>
+                    )}
+
                     {/* Icon display */}
                     <div className="relative w-16 h-16 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-200">
                       {isFolder ? (
@@ -353,8 +429,26 @@ const Finder = () => {
               })}
 
               {filteredItems.length === 0 && (
-                <div className="col-span-full py-16 text-center text-gray-500 text-xs">
-                  This folder is empty.
+                <div className="col-span-full py-16 flex flex-col items-center justify-center text-center text-gray-500 text-xs space-y-2">
+                  <img
+                    src="/images/trash.png"
+                    alt="Empty Trash"
+                    className="w-14 h-14 opacity-50 mb-1"
+                  />
+                  <p className="font-semibold text-gray-400">
+                    {currentLocationKey === 'trash'
+                      ? 'Trash is completely empty.'
+                      : 'This folder is empty.'}
+                  </p>
+                  {currentLocationKey === 'trash' && (
+                    <button
+                      type="button"
+                      onClick={handleRestoreTrash}
+                      className="text-xs text-sky-400 hover:underline mt-1"
+                    >
+                      Restore sample trash files
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -362,7 +456,7 @@ const Finder = () => {
         </main>
       </div>
 
-      {/* In-Finder File Preview Modal (matching Figma Screenshot 3) */}
+      {/* In-Finder File Preview Modal */}
       {previewFile && (
         <div
           className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 animate-fadeIn"
@@ -375,7 +469,10 @@ const Finder = () => {
             {/* Modal Header */}
             <div className="flex items-center justify-between px-4 py-2.5 bg-[#2d2d30] border-b border-white/10">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-red-500 inline-block cursor-pointer" onClick={() => setPreviewFile(null)} />
+                <span
+                  className="w-3 h-3 rounded-full bg-red-500 inline-block cursor-pointer"
+                  onClick={() => setPreviewFile(null)}
+                />
                 <span className="w-3 h-3 rounded-full bg-yellow-500 inline-block" />
                 <span className="w-3 h-3 rounded-full bg-green-500 inline-block" />
                 <span className="text-xs font-semibold text-gray-300 ml-2">

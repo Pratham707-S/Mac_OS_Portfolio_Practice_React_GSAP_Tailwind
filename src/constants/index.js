@@ -70,7 +70,7 @@ const dockApps = [
     id: "trash",
     name: "Trash",
     icon: "trash.png",
-    canOpen: false,
+    canOpen: true,
   },
 ];
 
@@ -442,6 +442,34 @@ const TRASH_LOCATION = {
       fileType: "img",
       position: "top-40 left-80",
       imageUrl: "/images/trash-2.png",
+    },
+    {
+      id: 3,
+      name: "legacy-jquery-v1.zip",
+      icon: "/images/txt.png",
+      kind: "file",
+      fileType: "txt",
+      position: "top-10 left-50",
+      subtitle: "Old 2023 Portfolio Archive",
+      description: [
+        "Legacy portfolio built with jQuery and CSS floats.",
+        "Archived and safely trashed in favor of React 19, GSAP, and Tailwind CSS! 🚀",
+      ],
+    },
+    {
+      id: 4,
+      name: "bugs-resolved.log",
+      icon: "/images/txt.png",
+      kind: "file",
+      fileType: "txt",
+      position: "top-40 left-20",
+      subtitle: "Squashed Bugs Log",
+      description: [
+        "✓ Fixed Draggable input intercepting",
+        "✓ Fixed White screen on missing Lucide icons",
+        "✓ Cleaned up redundant CSS selectors",
+        "All bugs successfully trashed! 🐛🚫",
+      ],
     },
   ],
 };
