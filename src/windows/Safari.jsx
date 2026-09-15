@@ -16,24 +16,10 @@ import {
 const blogPosts = [
   {
     id: 1,
-    date: 'Sep 2, 2025',
-    title: 'How I Built My macOS-Style Dev Portfolio with React + Tailwind',
+    date: 'Published on Medium',
+    title: 'Understanding How Access and Refresh Tokens Work',
     image: '/images/blog1.png',
-    link: 'https://jsmastery.com/blog/typescript-explained-what-it-is-why-it-matters-and-how-to-master-it',
-  },
-  {
-    id: 2,
-    date: 'Aug 28, 2025',
-    title: 'How I Organize My Projects for Sanity and Speed',
-    image: '/images/blog2.png',
-    link: 'https://jsmastery.com/blog/the-ultimate-guide-to-mastering-three-js-for-3d-development',
-  },
-  {
-    id: 3,
-    date: 'Aug 15, 2025',
-    title: 'Small UX Details That Make a Big Difference (and How I Implemented Them)',
-    image: '/images/blog3.png',
-    link: 'https://jsmastery.com/blog/the-ultimate-guide-to-mastering-gsap-animations',
+    link: 'https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f',
   },
 ];
 
