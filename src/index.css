@@ -429,7 +429,7 @@ input:checked + .mac-switch-slider:before {
   }
 
   #finder {
-    @apply absolute w-3xl max-w-[94vw] left-[15%] top-20 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl bg-[#1e1e1e] border border-[#3a3a3c];
+    @apply absolute w-2xl max-w-[92vw] left-[20%] top-24 shadow-2xl drop-shadow-2xl overflow-hidden rounded-xl bg-[#1e1e1e] border border-[#3a3a3c];
   }
 
   #txtfile {
