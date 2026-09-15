@@ -50,6 +50,20 @@ const Safari = () => {
     }
   };
 
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' && searchValue.trim()) {
+      const query = searchValue.trim();
+      // Check if it's a URL or search query
+      if (/^(https?:\/\/|[a-zA-Z0-9-]+\.[a-zA-Z]{2,})/.test(query)) {
+        const targetUrl = query.startsWith('http') ? query : `https://${query}`;
+        window.open(targetUrl, '_blank');
+      } else {
+        // Open real Google Search engine
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+      }
+    }
+  };
+
   return (
     <div className="w-full flex flex-col bg-[#1e1e1e] text-white rounded-xl shadow-2xl overflow-hidden font-sans select-none border border-[#3a3a3c]">
       {/* macOS Safari Header Matching Figma */}
@@ -73,6 +87,7 @@ const Safari = () => {
             <button
               type="button"
               title="Back"
+              onClick={() => setSearchValue('')}
               className="p-1 rounded hover:bg-white/10 hover:text-white transition-colors"
             >
               <ChevronLeft size={15} />
@@ -95,16 +110,19 @@ const Safari = () => {
           </button>
         </div>
 
-        {/* Center Smart Search / Address Bar */}
-        <div className="flex-1 max-w-sm mx-4 flex items-center justify-center gap-2 bg-[#1e1e1e] border border-white/10 px-3 py-1 rounded-lg text-xs shadow-inner">
-          <Search size={12} className="text-gray-400 flex-none" />
-          <input
-            type="text"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search or enter website name"
-            className="w-full bg-transparent outline-none border-none p-0 text-xs text-center placeholder:text-gray-400 text-gray-200"
-          />
+        {/* Center Smart Search / Address Bar with Search Engine */}
+        <div className="flex-1 max-w-sm mx-4 relative">
+          <div className="flex items-center justify-center gap-2 bg-[#1e1e1e] border border-white/10 px-3 py-1 rounded-lg text-xs shadow-inner focus-within:border-blue-500 transition-colors">
+            <Search size={12} className="text-gray-400 flex-none" />
+            <input
+              type="text"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={handleSearchSubmit}
+              placeholder="Search or enter website name"
+              className="w-full bg-transparent outline-none border-none p-0 text-xs text-center placeholder:text-gray-400 text-gray-200"
+            />
+          </div>
         </div>
 
         {/* Right Action Icons */}
