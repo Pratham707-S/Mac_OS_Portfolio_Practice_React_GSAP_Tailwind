@@ -4,6 +4,11 @@ import VideoBackground from "#components/VideoBackground.jsx";
 import WelcomeGsapEffect from '#components/WelcomeGsapEffect';
 import { Dock } from '#components';
 import { MacNotification } from '#components/MacNotification.jsx';
+import gsap from 'gsap';
+import { Draggable } from 'gsap/Draggable';
+gsap.registerPlugin(Draggable);
+
+import Terminal from '#windows';
 import {
   useAudioController,
   useSystemBrightness,
@@ -12,7 +17,7 @@ import {
 
 const App = () => {
     const { brightness, setBrightness, overlayOpacity } = useSystemBrightness(100);
-    const { volume, setVolume, isPlaying, setIsPlaying } = useAudioController(25);
+    const { volume, setVolume, isPlaying, setIsPlaying } = useAudioController(0);
     const { notification, showNotification, clearNotification } = useSystemNotification();
 
     return (
@@ -41,6 +46,7 @@ const App = () => {
             />
             <WelcomeGsapEffect />
             <Dock />
+            <Terminal/>
         </main>
     );
 };
