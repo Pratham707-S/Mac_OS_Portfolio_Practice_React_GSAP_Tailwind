@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import WindowWrapper from '#hoc/WindowWrapper.jsx';
 import WindowControls from '#components/WindowControls';
 import { locations } from '#constants';
 import useWindowStore from '#store/window';
-import gsap from 'gsap';
-import { Draggable } from 'gsap/Draggable';
-gsap.registerPlugin(Draggable);
-
 import {
   ChevronLeft,
   ChevronRight,
@@ -24,22 +20,17 @@ const Finder = () => {
   const { openWindow, windows } = useWindowStore();
   const [currentLocationKey, setCurrentLocationKey] = useState('work');
   const [activeFolder, setActiveFolder] = useState(null);
-  const [history, setHistory] = useState(['work']);
-  const [historyIndex, setHistoryIndex] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Interactive Trash state
   const [trashList, setTrashList] = useState(locations.trash.children || []);
 
-  // Canvas Ref for Draggable bounds
-  const canvasRef = useRef(null);
-  const draggablesRef = useRef([]);
-
   // Synchronize when opened from Dock via trash icon or custom data
   useEffect(() => {
     const requestedLoc = windows.finder?.data?.location;
     if (requestedLoc && requestedLoc !== currentLocationKey) {
-      navigateToLocation(requestedLoc);
+      setCurrentLocationKey(requestedLoc);
+      setActiveFolder(null);
     }
   }, [windows.finder?.data?.location]);
 
@@ -64,43 +55,10 @@ const Finder = () => {
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Initialize GSAP Draggable on items
-  useEffect(() => {
-    draggablesRef.current.forEach((d) => d.kill());
-    draggablesRef.current = [];
-
-    if (!canvasRef.current || currentLocationKey === 'about') return;
-
-    const elements = canvasRef.current.querySelectorAll('.finder-draggable-item');
-    if (elements.length > 0) {
-      draggablesRef.current = Draggable.create(elements, {
-        bounds: canvasRef.current,
-        edgeResistance: 0.85,
-        type: 'x,y',
-        zIndexBoost: true,
-        cursor: 'grab',
-        activeCursor: 'grabbing',
-        dragClickables: true,
-        onPress: function (e) {
-          e.stopPropagation();
-        },
-      });
-    }
-
-    return () => {
-      draggablesRef.current.forEach((d) => d.kill());
-      draggablesRef.current = [];
-    };
-  }, [currentLocationKey, activeFolder, filteredItems.length]);
-
-  // Handle Navigation
+  // Navigation handlers
   const navigateToLocation = (locKey) => {
     setCurrentLocationKey(locKey);
     setActiveFolder(null);
-    const newHist = history.slice(0, historyIndex + 1);
-    newHist.push(locKey);
-    setHistory(newHist);
-    setHistoryIndex(newHist.length - 1);
   };
 
   const openFolder = (folder) => {
@@ -109,20 +67,6 @@ const Finder = () => {
 
   const handleBack = () => {
     if (activeFolder) {
-      setActiveFolder(null);
-    } else if (historyIndex > 0) {
-      const prevLoc = history[historyIndex - 1];
-      setHistoryIndex(historyIndex - 1);
-      setCurrentLocationKey(prevLoc);
-      setActiveFolder(null);
-    }
-  };
-
-  const handleForward = () => {
-    if (historyIndex < history.length - 1) {
-      const nextLoc = history[historyIndex + 1];
-      setHistoryIndex(historyIndex + 1);
-      setCurrentLocationKey(nextLoc);
       setActiveFolder(null);
     }
   };
@@ -171,7 +115,7 @@ const Finder = () => {
             <button
               type="button"
               onClick={handleBack}
-              disabled={historyIndex === 0 && !activeFolder}
+              disabled={!activeFolder}
               title="Back"
               className="p-1 rounded hover:bg-white/10 hover:text-white disabled:opacity-30 transition-colors"
             >
@@ -179,8 +123,7 @@ const Finder = () => {
             </button>
             <button
               type="button"
-              onClick={handleForward}
-              disabled={historyIndex >= history.length - 1}
+              disabled
               title="Forward"
               className="p-1 rounded hover:bg-white/10 hover:text-white disabled:opacity-30 transition-colors"
             >
@@ -194,7 +137,7 @@ const Finder = () => {
             {activeFolder && (
               <>
                 <span className="text-gray-500">/</span>
-                <span className="text-blue-400 truncate max-w-[180px]">
+                <span className="text-blue-400 truncate max-w-[200px]">
                   {activeFolder.name}
                 </span>
               </>
@@ -243,18 +186,18 @@ const Finder = () => {
         </div>
       </div>
 
-      {/* Main Container: Sidebar + Compact Freeform Canvas */}
-      <div className="flex min-h-[330px] max-h-[380px]">
+      {/* Main Container: Sidebar + Content Canvas */}
+      <div className="flex min-h-[340px] max-h-[400px]">
         {/* Left Sidebar */}
-        <aside className="w-40 flex-none bg-[#252528] border-r border-[#3a3a3c] p-2.5 flex flex-col space-y-3">
+        <aside className="w-44 flex-none bg-[#252528] border-r border-[#3a3a3c] p-3 flex flex-col space-y-3">
           <div>
-            <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider px-2 mb-1">
+            <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider px-2 mb-1.5">
               Favorites
             </h3>
             <ul className="space-y-0.5">
               <li
                 onClick={() => navigateToLocation('work')}
-                className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                   currentLocationKey === 'work' && !activeFolder
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-gray-300 hover:bg-white/10'
@@ -266,7 +209,7 @@ const Finder = () => {
 
               <li
                 onClick={() => navigateToLocation('about')}
-                className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                   currentLocationKey === 'about'
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-gray-300 hover:bg-white/10'
@@ -278,7 +221,7 @@ const Finder = () => {
 
               <li
                 onClick={() => navigateToLocation('resume')}
-                className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                className={`flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                   currentLocationKey === 'resume'
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-gray-300 hover:bg-white/10'
@@ -290,7 +233,7 @@ const Finder = () => {
 
               <li
                 onClick={() => navigateToLocation('trash')}
-                className={`flex items-center justify-between px-2 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                className={`flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
                   currentLocationKey === 'trash'
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-gray-300 hover:bg-white/10'
@@ -309,10 +252,10 @@ const Finder = () => {
             </ul>
           </div>
 
-          {/* Work Sub-Folders */}
+          {/* Work Sub-Folders in Sidebar */}
           {locations.work.children && (
             <div>
-              <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider px-2 mb-1">
+              <h3 className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider px-2 mb-1.5">
                 Work
               </h3>
               <ul className="space-y-0.5">
@@ -327,13 +270,13 @@ const Finder = () => {
                         setCurrentLocationKey('work');
                         openFolder(proj);
                       }}
-                      className={`flex items-center gap-2 px-2 py-1 rounded-lg text-[11px] font-medium cursor-pointer transition-colors truncate ${
+                      className={`flex items-center gap-2 px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer transition-colors truncate ${
                         isSelected
                           ? 'bg-blue-600 text-white shadow-sm'
                           : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'
                       }`}
                     >
-                      <Folder size={11} className={isSelected ? 'text-white' : 'text-blue-400'} />
+                      <Folder size={12} className={isSelected ? 'text-white' : 'text-sky-400'} />
                       <span className="truncate">{proj.name}</span>
                     </li>
                   );
@@ -343,15 +286,12 @@ const Finder = () => {
           )}
         </aside>
 
-        {/* Right Main Finder Canvas Area */}
-        <main
-          ref={canvasRef}
-          className="flex-1 relative p-4 bg-[#1c1c1e] overflow-hidden min-h-[330px]"
-        >
-          {/* About Me Special View */}
+        {/* Right Main Content Canvas */}
+        <main className="flex-1 p-6 bg-[#1c1c1e] overflow-y-auto">
+          {/* About Me View (Matching Figma Screenshot 5) */}
           {currentLocationKey === 'about' ? (
-            <div className="max-w-xl mx-auto py-2 overflow-y-auto max-h-[320px]">
-              <div className="flex items-center gap-3 mb-4">
+            <div className="max-w-xl mx-auto py-2">
+              <div className="flex items-center gap-3.5 mb-4">
                 <img
                   src="/images/pratham.jpg"
                   alt="Pratham Tiwari"
@@ -361,7 +301,7 @@ const Finder = () => {
                   <h2 className="text-sm font-bold text-white">
                     Meet the Developer Behind the Code
                   </h2>
-                  <p className="text-[11px] text-sky-400 font-medium">
+                  <p className="text-xs text-sky-400 font-medium">
                     Pratham Tiwari — Frontend & Motion Engineer
                   </p>
                 </div>
@@ -380,29 +320,23 @@ const Finder = () => {
                   I'm big on clean UI, good UX, and writing code that doesn't
                   need a search party to debug.
                 </p>
+                <p>
+                  Outside of dev work, you'll find me tweaking layouts at 2AM,
+                  sipping chai/coffee, and exploring creative web animations 🚀
+                </p>
               </div>
             </div>
           ) : (
-            /* Freeform Draggable Items (matching Figma Screenshot) */
-            <>
-              {filteredItems.map((item, idx) => {
+            /* Clean Grid Layout (Matching Figma Screenshot 1 & 2) */
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 p-2">
+              {filteredItems.map((item) => {
                 const isFolder = item.kind === 'folder';
-                const slots = [
-                  { top: '14%', left: '12%' },
-                  { top: '14%', left: '56%' },
-                  { top: '54%', left: '12%' },
-                  { top: '54%', left: '56%' },
-                  { top: '34%', left: '34%' },
-                  { top: '70%', left: '34%' },
-                ];
-                const slotStyle = slots[idx % slots.length];
 
                 return (
                   <div
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    style={slotStyle}
-                    className="finder-draggable-item absolute group flex flex-col items-center justify-center p-2 rounded-xl hover:bg-white/10 cursor-pointer transition-colors text-center w-28 select-none"
+                    className="group flex flex-col items-center justify-center p-3 rounded-xl hover:bg-white/10 cursor-pointer transition-all duration-200 text-center"
                   >
                     {/* Delete button when viewing Trash */}
                     {currentLocationKey === 'trash' && (
@@ -410,43 +344,43 @@ const Finder = () => {
                         type="button"
                         onClick={(e) => handleDeleteItemFromTrash(e, item.id)}
                         title="Delete permanently"
-                        className="absolute top-0 right-1 p-1 rounded-full bg-rose-500 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                        className="absolute top-1 right-1 p-1 rounded-full bg-rose-500 text-white opacity-0 group-hover:opacity-100 transition-opacity z-10"
                       >
                         <X size={10} />
                       </button>
                     )}
 
                     {/* Icon display */}
-                    <div className="relative w-12 h-12 flex items-center justify-center mb-1 pointer-events-none">
+                    <div className="relative w-14 h-14 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform duration-200">
                       {isFolder ? (
                         <img
                           src="/images/folder.png"
                           alt="folder"
-                          className="w-12 h-12 object-contain drop-shadow-md"
+                          className="w-14 h-14 object-contain drop-shadow-md"
                         />
                       ) : item.fileType === 'url' ? (
                         <img
                           src="/images/safari.png"
                           alt="safari link"
-                          className="w-11 h-11 object-contain drop-shadow-md"
+                          className="w-12 h-12 object-contain drop-shadow-md"
                         />
                       ) : item.fileType === 'txt' ? (
                         <img
                           src="/images/txt.png"
                           alt="text document"
-                          className="w-11 h-11 object-contain drop-shadow-md"
+                          className="w-12 h-12 object-contain drop-shadow-md"
                         />
                       ) : item.fileType === 'img' ? (
                         <img
                           src={item.imageUrl || '/images/image.png'}
                           alt="preview"
-                          className="w-11 h-11 object-cover rounded-lg drop-shadow-md border border-white/20"
+                          className="w-12 h-12 object-cover rounded-lg drop-shadow-md border border-white/20"
                         />
                       ) : (
                         <img
                           src={item.icon || '/images/plain.png'}
                           alt={item.name}
-                          className="w-11 h-11 object-contain drop-shadow-md"
+                          className="w-12 h-12 object-contain drop-shadow-md"
                         />
                       )}
 
@@ -459,7 +393,7 @@ const Finder = () => {
                     </div>
 
                     {/* File / Folder Name */}
-                    <span className="text-[11px] font-medium text-gray-200 group-hover:text-white leading-tight max-w-[110px] break-words line-clamp-2 select-none pointer-events-none">
+                    <span className="text-xs font-medium text-gray-200 group-hover:text-white leading-tight max-w-[120px] break-words line-clamp-2">
                       {item.name}
                     </span>
                   </div>
@@ -467,7 +401,7 @@ const Finder = () => {
               })}
 
               {filteredItems.length === 0 && (
-                <div className="w-full h-full flex flex-col items-center justify-center text-center text-gray-500 text-xs space-y-2 py-12">
+                <div className="col-span-full py-12 flex flex-col items-center justify-center text-center text-gray-500 text-xs space-y-2">
                   <img
                     src="/images/trash.png"
                     alt="Empty Trash"
@@ -489,7 +423,7 @@ const Finder = () => {
                   )}
                 </div>
               )}
-            </>
+            </div>
           )}
         </main>
       </div>
