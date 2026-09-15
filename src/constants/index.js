@@ -205,10 +205,10 @@ const WORK_LOCATION = {
     // ▶ Project 1: KP Store
     {
       id: 5,
-      name: "KP Store (Apple E-Commerce)",
+      name: "Project 1 (KP Store)",
       icon: "/images/folder.png",
       kind: "folder",
-      position: "top-10 left-5",
+      position: "top-8 left-8",
       windowPosition: "top-[5vh] left-5",
       children: [
         {
@@ -217,7 +217,7 @@ const WORK_LOCATION = {
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
-          position: "top-5 left-10",
+          position: "top-6 left-8",
           subtitle: "Apple-Inspired E-Commerce Platform",
           image: "/images/1786199425015.jpeg",
           description: [
@@ -233,7 +233,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "url",
           href: "https://react-shopping-cart-by-hand-no-ai.vercel.app/",
-          position: "top-10 right-20",
+          position: "top-6 left-60",
         },
         {
           id: 4,
@@ -241,7 +241,7 @@ const WORK_LOCATION = {
           icon: "/images/image.png",
           kind: "file",
           fileType: "img",
-          position: "top-52 right-80",
+          position: "top-44 left-8",
           imageUrl: "/images/1786199425015.jpeg",
         },
         {
@@ -251,7 +251,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "fig",
           href: "https://figma.com",
-          position: "top-60 right-20",
+          position: "top-44 left-60",
         },
       ],
     },
@@ -259,10 +259,10 @@ const WORK_LOCATION = {
     // ▶ Project 2: REDEFINE GAMING
     {
       id: 6,
-      name: "REDEFINE GAMING",
+      name: "Project 2 (Redefine Gaming)",
       icon: "/images/folder.png",
       kind: "folder",
-      position: "top-52 right-80",
+      position: "top-8 left-64",
       windowPosition: "top-[20vh] left-7",
       children: [
         {
@@ -271,7 +271,7 @@ const WORK_LOCATION = {
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
-          position: "top-5 right-10",
+          position: "top-6 left-8",
           subtitle: "Awwwards-Level 3D Gaming Experience",
           image: "/images/redefine-gaming.png",
           description: [
@@ -287,7 +287,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "url",
           href: "https://award-winning-website-main-beryl.vercel.app/",
-          position: "top-20 left-20",
+          position: "top-6 left-60",
         },
         {
           id: 4,
@@ -295,7 +295,7 @@ const WORK_LOCATION = {
           icon: "/images/image.png",
           kind: "file",
           fileType: "img",
-          position: "top-52 left-80",
+          position: "top-44 left-8",
           imageUrl: "/images/redefine-gaming.png",
         },
         {
@@ -305,7 +305,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "fig",
           href: "https://figma.com",
-          position: "top-60 left-5",
+          position: "top-44 left-60",
         },
       ],
     },
@@ -313,10 +313,10 @@ const WORK_LOCATION = {
     // ▶ Project 3: GSAP Awwwards Experience
     {
       id: 7,
-      name: "GSAP Awwwards Website",
+      name: "Project 3 (GSAP Awwwards)",
       icon: "/images/folder.png",
       kind: "folder",
-      position: "top-10 left-80",
+      position: "top-48 left-8",
       windowPosition: "top-[33vh] left-7",
       children: [
         {
@@ -325,7 +325,7 @@ const WORK_LOCATION = {
           icon: "/images/txt.png",
           kind: "file",
           fileType: "txt",
-          position: "top-5 left-10",
+          position: "top-6 left-8",
           subtitle: "Creative Motion Showcase",
           description: [
             "A showcase of high-end GSAP scroll-triggered timelines, magnetic button interactions, and fluid typography reveals.",
@@ -339,7 +339,7 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "url",
           href: "https://gsap-awwwards-website-main-peach.vercel.app/",
-          position: "top-10 right-20",
+          position: "top-6 left-60",
         },
         {
           id: 4,
@@ -347,7 +347,7 @@ const WORK_LOCATION = {
           icon: "/images/image.png",
           kind: "file",
           fileType: "img",
-          position: "top-52 right-80",
+          position: "top-44 left-8",
           imageUrl: "/images/blog3.png",
         },
         {
@@ -357,7 +357,50 @@ const WORK_LOCATION = {
           kind: "file",
           fileType: "fig",
           href: "https://figma.com",
-          position: "top-60 right-20",
+          position: "top-44 left-60",
+        },
+      ],
+    },
+
+    // ▶ Project 4: Full Stack Project
+    {
+      id: 8,
+      name: "Project 4 (Creative Motion)",
+      icon: "/images/folder.png",
+      kind: "folder",
+      position: "top-48 left-64",
+      windowPosition: "top-[40vh] left-7",
+      children: [
+        {
+          id: 1,
+          name: "Creative Motion.txt",
+          icon: "/images/txt.png",
+          kind: "file",
+          fileType: "txt",
+          position: "top-6 left-8",
+          subtitle: "Modern Interactive UI Experiments",
+          description: [
+            "Interactive experimental web components built with React 19, Framer Motion, and GSAP.",
+            "Features custom physics, smooth inertia scrolling, and high-DPI canvas rendering.",
+          ],
+        },
+        {
+          id: 2,
+          name: "live-demo.com",
+          icon: "/images/safari.png",
+          kind: "file",
+          fileType: "url",
+          href: "https://github.com/Pratham707-S",
+          position: "top-6 left-60",
+        },
+        {
+          id: 4,
+          name: "screenshot.png",
+          icon: "/images/image.png",
+          kind: "file",
+          fileType: "img",
+          position: "top-44 left-8",
+          imageUrl: "/images/blog2.png",
         },
       ],
     },
