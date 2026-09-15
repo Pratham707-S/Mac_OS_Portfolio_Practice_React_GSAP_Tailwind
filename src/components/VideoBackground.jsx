@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-const VideoBackground = ({ volume = 25, setVolume, isPlaying = true }) => {
+const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
     const videoRef = useRef(null);
     const volumeRef = useRef(volume);
 

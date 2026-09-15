@@ -30,7 +30,7 @@ import {
 const App = () => {
     const isMobile = useIsMobile(768);
     const { brightness, setBrightness, overlayOpacity } = useSystemBrightness(100);
-    const { volume, setVolume, isPlaying, setIsPlaying } = useAudioController(20);
+    const { volume, setVolume, isPlaying, setIsPlaying } = useAudioController(35);
     const { notification, showNotification, clearNotification } = useSystemNotification();
     const { isDarkMode, toggleTheme } = useSystemTheme();
 
