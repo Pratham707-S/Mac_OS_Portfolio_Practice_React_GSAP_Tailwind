@@ -14,48 +14,67 @@ const Dock = () => {
         const dock = dockRef.current;
         if (!dock) return;
 
-        const icons = dock.querySelectorAll(".dock-icon");
+        const icons = Array.from(dock.querySelectorAll(".dock-icon"));
+        let iconCenters = [];
+        let dockLeft = 0;
+        let rafId = null;
 
-        const animateIcons = (mouseX) => {
-            const { left: dockLeft } = dock.getBoundingClientRect();
-
-            icons.forEach((icon) => {
-                const { left: iconLeft, width } = icon.getBoundingClientRect();
-                const center = iconLeft - dockLeft + width / 2;
-                const distance = Math.abs(mouseX - center);
-                const intensity = Math.exp(-(distance ** 2) / 3500);
-
-                gsap.to(icon, {
-                    scale: 1 + 0.35 * intensity,
-                    y: -10 * intensity,
-                    transformOrigin: "bottom center",
-                    duration: 0.2,
-                    ease: "power1.out",
-                });
+        const updateDockBounds = () => {
+            const dockRect = dock.getBoundingClientRect();
+            dockLeft = dockRect.left;
+            iconCenters = icons.map(icon => {
+                const rect = icon.getBoundingClientRect();
+                return {
+                    icon,
+                    center: rect.left - dockLeft + rect.width / 2
+                };
             });
         };
 
         const handleMouseMove = (e) => {
-            const { left } = dock.getBoundingClientRect();
-            animateIcons(e.clientX - left);
+            if (!iconCenters.length) updateDockBounds();
+            const mouseX = e.clientX - dockLeft;
+
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(() => {
+                iconCenters.forEach(({ icon, center }) => {
+                    const distance = Math.abs(mouseX - center);
+                    const intensity = Math.exp(-(distance ** 2) / 3500);
+
+                    gsap.to(icon, {
+                        scale: 1 + 0.35 * intensity,
+                        y: -10 * intensity,
+                        transformOrigin: "bottom center",
+                        duration: 0.15,
+                        ease: "power1.out",
+                        overwrite: "auto",
+                    });
+                });
+            });
         };
 
         const resetIcons = () => {
+            if (rafId) cancelAnimationFrame(rafId);
             icons.forEach((icon) => {
                 gsap.to(icon, {
                     scale: 1,
                     y: 0,
                     transformOrigin: "bottom center",
-                    duration: 0.3,
+                    duration: 0.25,
                     ease: 'power1.out',
+                    overwrite: "auto",
                 });
             });
+            iconCenters = [];
         };
 
-        dock.addEventListener('mousemove', handleMouseMove);
-        dock.addEventListener('mouseleave', resetIcons);
+        dock.addEventListener('mouseenter', updateDockBounds, { passive: true });
+        dock.addEventListener('mousemove', handleMouseMove, { passive: true });
+        dock.addEventListener('mouseleave', resetIcons, { passive: true });
 
         return () => {
+            if (rafId) cancelAnimationFrame(rafId);
+            dock.removeEventListener('mouseenter', updateDockBounds);
             dock.removeEventListener('mousemove', handleMouseMove);
             dock.removeEventListener('mouseleave', resetIcons);
         };

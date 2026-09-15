@@ -20,40 +20,71 @@ const renderText = (text, className, baseWeight = 400) => {
 };
 
 const setupTextHover = (container, type) => {
-  if (!container) return;
+  if (!container) return () => {};
 
-  const letters = container.querySelectorAll("span");
+  const letters = Array.from(container.querySelectorAll("span"));
   const { min, max, default: base } = FONT_WEIGHTS[type];
+  let bounds = [];
+  let containerLeft = 0;
+  let rafId = null;
 
-  const animateLetter = (letter, weight, duration = 0.25) => {
+  const updateBounds = () => {
+    const containerRect = container.getBoundingClientRect();
+    containerLeft = containerRect.left;
+    bounds = letters.map((letter) => {
+      const rect = letter.getBoundingClientRect();
+      return {
+        center: rect.left - containerLeft + rect.width / 2,
+        letter,
+      };
+    });
+  };
+
+  const animateLetter = (letter, weight, duration = 0.2) => {
     return gsap.to(letter, {
       duration,
       ease: "power2.out",
       fontWeight: weight,
+      overwrite: "auto",
     });
   };
 
   const handleMouseMove = (e) => {
-    const { left } = container.getBoundingClientRect();
-    const mouseX = e.clientX - left;
+    if (!bounds.length) updateBounds();
+    const mouseX = e.clientX - containerLeft;
 
-    letters.forEach((letter) => {
-      const { left: l, width: w } = letter.getBoundingClientRect();
-      const distance = Math.abs(mouseX - (l - left + w / 2));
-      const intensity = Math.exp(-(distance ** 2) / 20000);
-
-      animateLetter(letter, min + (max - min) * intensity);
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      bounds.forEach(({ center, letter }) => {
+        const distance = Math.abs(mouseX - center);
+        const intensity = Math.exp(-(distance ** 2) / 20000);
+        animateLetter(letter, min + (max - min) * intensity);
+      });
     });
+  };
+
+  const handleMouseEnter = () => {
+    updateBounds();
   };
 
   const handleMouseLeave = () => {
+    if (rafId) cancelAnimationFrame(rafId);
     letters.forEach((letter) => {
-      animateLetter(letter, base);
+      animateLetter(letter, base, 0.3);
     });
+    bounds = [];
   };
 
-  container.addEventListener("mousemove", handleMouseMove);
-  container.addEventListener("mouseleave", handleMouseLeave);
+  container.addEventListener("mouseenter", handleMouseEnter, { passive: true });
+  container.addEventListener("mousemove", handleMouseMove, { passive: true });
+  container.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+
+  return () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    container.removeEventListener("mouseenter", handleMouseEnter);
+    container.removeEventListener("mousemove", handleMouseMove);
+    container.removeEventListener("mouseleave", handleMouseLeave);
+  };
 };
 
 const WelcomeGsapEffect = () => {
@@ -61,8 +92,12 @@ const WelcomeGsapEffect = () => {
   const subtitleRef = useRef(null);
 
   useGSAP(() => {
-    setupTextHover(titleRef.current, "title");
-    setupTextHover(subtitleRef.current, "subtitle");
+    const cleanTitle = setupTextHover(titleRef.current, "title");
+    const cleanSubtitle = setupTextHover(subtitleRef.current, "subtitle");
+    return () => {
+      cleanTitle?.();
+      cleanSubtitle?.();
+    };
   }, []);
 
   return (

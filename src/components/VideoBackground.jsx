@@ -186,9 +186,11 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
                 loop
                 muted={volume === 0 || !isAudible}
                 playsInline
+                preload="auto"
                 onTimeUpdate={handleTimeUpdate}
                 onEnded={handleEnded}
-                className="fixed top-0 left-0 w-full h-full object-cover -z-10"
+                className="fixed top-0 left-0 w-full h-full object-cover -z-10 pointer-events-none transform-gpu will-change-transform"
+                style={{ transform: "translate3d(0, 0, 0)", backfaceVisibility: "hidden" }}
             >
                 <source src="/video-background/PinGrab_1789291718783.mp4" type="video/mp4" />
             </video>
