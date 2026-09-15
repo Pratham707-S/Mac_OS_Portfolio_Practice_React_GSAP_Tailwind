@@ -63,7 +63,7 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
             }
         }
 
-        // Global unlock listener: unmute and play with sound only if NOT paused
+        // Global unlock listener: unmute and play with sound on first click/touch
         const unlockAudio = () => {
             const vid = videoRef.current;
             if (vid && !hasFinishedAudibleCycle.current) {
@@ -111,18 +111,30 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
         };
     }, [setVolume]);
 
-    // Track 1 full audible cycle: only countdown while audio is actively playing
+    // Automatically mute as soon as 1 full video/song cycle finishes
     const handleTimeUpdate = () => {
         const video = videoRef.current;
         if (!video || !isAudible || hasFinishedAudibleCycle.current || !isPlayingRef.current) return;
 
-        // Ensure audio has played for 14 seconds before auto-muting
-        if (audiblePlayStartTime.current && (Date.now() - audiblePlayStartTime.current >= 14000)) {
+        // Auto-mute on either video duration reaching loop boundary or after full cycle length
+        const reachedVideoEnd = video.duration && video.currentTime >= video.duration - 0.4;
+        const reachedElapsedTime = audiblePlayStartTime.current && (Date.now() - audiblePlayStartTime.current >= 13500);
+
+        if (reachedVideoEnd || reachedElapsedTime) {
             hasFinishedAudibleCycle.current = true;
             video.muted = true;
             setIsAudible(false);
             setVolume?.(0);
         }
+    };
+
+    const handleEnded = () => {
+        const video = videoRef.current;
+        if (!video) return;
+        hasFinishedAudibleCycle.current = true;
+        video.muted = true;
+        setIsAudible(false);
+        setVolume?.(0);
     };
 
     // Handle Volume prop changes
@@ -141,7 +153,6 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
             setIsAudible(true);
             setShowUnmuteHint(false);
             audiblePlayStartTime.current = Date.now();
-            // Strictly check isPlaying before playing
             if (isPlayingRef.current) {
                 video.play().catch(() => {});
             }
@@ -176,6 +187,7 @@ const VideoBackground = ({ volume = 35, setVolume, isPlaying = true }) => {
                 muted={volume === 0 || !isAudible}
                 playsInline
                 onTimeUpdate={handleTimeUpdate}
+                onEnded={handleEnded}
                 className="fixed top-0 left-0 w-full h-full object-cover -z-10"
             >
                 <source src="/video-background/PinGrab_1789291718783.mp4" type="video/mp4" />
