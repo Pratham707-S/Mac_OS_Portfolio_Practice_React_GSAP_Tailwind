@@ -12,7 +12,7 @@ const renderText = (text, className, baseWeight = 400) => {
     <span
       key={i}
       className={className}
-      style={{ fontVariationSettings: `'wght' ${baseWeight}` }}
+      style={{ fontWeight: baseWeight }}
     >
       {char === " " ? "\u00A0" : char}
     </span>
@@ -29,7 +29,7 @@ const setupTextHover = (container, type) => {
     return gsap.to(letter, {
       duration,
       ease: "power2.out",
-      fontVariationSettings: `'wght' ${weight}`,
+      fontWeight: weight,
     });
   };
 
