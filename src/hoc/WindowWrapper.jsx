@@ -33,14 +33,17 @@ const WindowWrapper = (Component, windowKey) => {
 
         useGSAP(() => {
             const el = ref.current;
-            if (!el) return;
+            if (!el || !isOpen) return;
 
+            const header = el.querySelector('#window-header') || el;
             const [instance] = Draggable.create(el, {
+                trigger: header,
+                dragClickables: false,
                 onPress: () => focusWindow(windowKey),
             });
 
-            return () => instance.kill();
-        }, []);
+            return () => instance?.kill();
+        }, [isOpen]);
 
         return (
             <section

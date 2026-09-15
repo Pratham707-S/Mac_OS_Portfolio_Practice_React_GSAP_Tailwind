@@ -129,31 +129,31 @@ const techStack = [
 const socials = [
   {
     id: 1,
-    text: "Github",
-    icon: "/icons/github.svg",
+    text: "Schedule a call",
+    icon: "/icons/calendar.svg",
     bg: "#f4656b",
-    link: "https://github.com/JavaScript-Mastery-Pro",
+    link: "tel:+91",
   },
   {
     id: 2,
-    text: "Platform",
-    icon: "/icons/atom.svg",
+    text: "Email me",
+    icon: "/icons/send.svg",
     bg: "#4bcb63",
-    link: "https://jsmastery.com/",
+    link: "mailto:prathamtiwari.dev@gmail.com",
   },
   {
     id: 3,
-    text: "Twitter/X",
-    icon: "/icons/twitter.svg",
+    text: "GitHub",
+    icon: "/icons/github.svg",
     bg: "#ff866b",
-    link: "https://x.com/jsmasterypro",
+    link: "https://github.com/Pratham707-S",
   },
   {
     id: 4,
     text: "LinkedIn",
     icon: "/icons/linkedin.svg",
     bg: "#05b6f6",
-    link: "https://www.linkedin.com/company/javascriptmastery/posts/?feedView=all",
+    link: "https://www.linkedin.com/in/pratham-tiwari-962a00342/",
   },
 ];
 
@@ -166,12 +166,7 @@ const photosLinks = [
   {
     id: 2,
     icon: "/icons/gicon2.svg",
-    title: "Memories",
-  },
-  {
-    id: 3,
-    icon: "/icons/file.svg",
-    title: "Places",
+    title: "Videos",
   },
   {
     id: 4,

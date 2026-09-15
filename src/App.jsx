@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 gsap.registerPlugin(Draggable);
 
-import Terminal from '#windows';
+import { Terminal, Contact, Photos } from '#windows';
 import {
   useAudioController,
   useSystemBrightness,
@@ -46,7 +46,9 @@ const App = () => {
             />
             <WelcomeGsapEffect />
             <Dock />
-            <Terminal/>
+            <Terminal />
+            <Contact />
+            <Photos />
         </main>
     );
 };
