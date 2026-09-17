@@ -12,7 +12,7 @@ const ImgFile = () => {
   const imageUrl = fileData?.imageUrl || '/images/image.png';
 
   return (
-    <div className="w-full flex flex-col bg-[#1e1e1e] text-white rounded-xl shadow-2xl overflow-hidden font-sans select-none border border-[#3a3a3c]">
+    <div className="w-full h-full flex flex-col bg-[#1e1e1e] text-white font-sans select-none">
       {/* macOS Window Header Matching Preview.app */}
       <div
         id="window-header"
