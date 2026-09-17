@@ -2,6 +2,8 @@
 
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 html,
 body {
   width: 100dvw;
@@ -245,6 +247,15 @@ html.light #dock .dock-container span.bg-white\/90 {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) !important;
 }
 
+/* --- Widgets Sidebar Light Mode --- */
+html.light .animate-sidebar-in {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;
+  color: #1d1d1f !important;
+}
+
+
 /* ==========================================================================
    macOS Windows Light Theme Engine
    ========================================================================== */
@@ -472,6 +483,11 @@ html.light #terminal a.text-\[\#60a5fa\] {
 html.light #contact {
   background-color: #ffffff !important;
   border-color: rgba(0, 0, 0, 0.14) !important;
+  color: #1d1d1f !important;
+}
+
+html.light #contact > div {
+  background-color: #ffffff !important;
   color: #1d1d1f !important;
 }
 
@@ -742,7 +758,7 @@ input:checked + .mac-switch-slider:before {
   }
 
   #contact {
-    @apply w-xl max-w-[92vw] absolute top-24 left-[28%] bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden;
+    @apply w-xl max-w-[92vw] absolute top-24 left-[28%] bg-white dark:bg-[#1e1e1e] shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-gray-200 dark:border-[#3a3a3c];
   }
 
   #photos {
