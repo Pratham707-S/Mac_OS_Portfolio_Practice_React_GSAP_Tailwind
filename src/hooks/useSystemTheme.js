@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export const useSystemTheme = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem("macos_theme");
-    return saved ? saved === "dark" : true; // Default dark
+    return saved === "light" ? false : true; // Default dark
   });
 
   useEffect(() => {

@@ -68,16 +68,16 @@ const Contact = () => {
   };
 
   return (
-    <div className="w-full flex flex-col bg-white dark:bg-[#1e1e1e] text-gray-900 dark:text-gray-100 rounded-xl shadow-2xl overflow-hidden font-sans transition-colors duration-200">
+    <div className="w-full h-full flex flex-col font-sans select-none">
       {/* macOS Window Header */}
-      <div id="window-header" className="flex items-center justify-between px-4 py-3 bg-[#f6f6f6] dark:bg-[#2d2d2d] border-b border-gray-200 dark:border-[#3a3a3c] select-none">
+      <div id="window-header" className="flex items-center justify-between px-4 py-2.5 bg-[#2d2d2d] border-b border-[#3a3a3c] select-none">
         <WindowControls target="contact" />
-        <p className="font-semibold text-xs text-gray-500 dark:text-gray-400 tracking-tight">Contact Me</p>
+        <p className="font-semibold text-xs text-gray-400 tracking-tight">Contact Me</p>
         <div className="w-12" /> {/* Spacing balance */}
       </div>
 
       {/* Window Body */}
-      <div className="p-6 sm:p-8 space-y-4">
+      <div className="p-6 sm:p-8 space-y-4 bg-[#1e1e1e] text-white flex-1 overflow-y-auto">
         {/* User Avatar */}
         <div className="relative inline-block">
           <img

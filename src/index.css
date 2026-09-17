@@ -486,7 +486,13 @@ html.light #contact {
   color: #1d1d1f !important;
 }
 
-html.light #contact > div {
+html.light #contact div {
+  background-color: transparent;
+  color: #1d1d1f;
+}
+
+html.light #contact .p-6,
+html.light #contact .sm\:p-8 {
   background-color: #ffffff !important;
   color: #1d1d1f !important;
 }
@@ -758,7 +764,7 @@ input:checked + .mac-switch-slider:before {
   }
 
   #contact {
-    @apply w-xl max-w-[92vw] absolute top-24 left-[28%] bg-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
+    @apply w-xl max-w-[92vw] absolute top-24 left-[28%] bg-[#1e1e1e] text-white shadow-2xl drop-shadow-2xl rounded-xl overflow-hidden border border-[#3a3a3c];
   }
 
   #photos {
