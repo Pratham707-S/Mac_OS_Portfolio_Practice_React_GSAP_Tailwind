@@ -417,8 +417,7 @@ const WORK_LOCATION = {
           name: "jwt-security-guide.com",
           icon: "/images/safari.png",
           kind: "file",
-          fileType: "url",
-          href: "https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f",
+          fileType: "safari",
         },
         {
           id: 305,

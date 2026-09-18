@@ -120,6 +120,8 @@ const Finder = () => {
   const handleItemClick = (item) => {
     if (item.kind === 'folder') {
       openFolder(item);
+    } else if (item.fileType === 'safari' || item.name === 'jwt-security-guide.com') {
+      openWindow('safari');
     } else if (item.fileType === 'url' || item.href) {
       window.open(item.href, '_blank');
     } else if (item.fileType === 'pdf') {
@@ -392,7 +394,7 @@ const Finder = () => {
                           alt="folder"
                           className="w-14 h-14 object-contain drop-shadow-md"
                         />
-                      ) : item.fileType === 'url' ? (
+                      ) : item.fileType === 'url' || item.fileType === 'safari' ? (
                         <img
                           src="/images/safari.png"
                           alt="safari link"
@@ -418,8 +420,8 @@ const Finder = () => {
                         />
                       )}
 
-                      {/* Small badge for live url */}
-                      {item.fileType === 'url' && (
+                      {/* Small badge for live url or safari guide */}
+                      {(item.fileType === 'url' || item.fileType === 'safari') && (
                         <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-0.5 text-white shadow-sm">
                           <ExternalLink size={8} />
                         </div>
