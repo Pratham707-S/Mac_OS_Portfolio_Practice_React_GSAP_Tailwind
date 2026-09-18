@@ -358,92 +358,13 @@ const WORK_LOCATION = {
         },
       ],
     },
-
-    // ▶ Project 3: JWT Auth (Security Guide)
-    {
-      id: 7,
-      name: "JWT Auth (Security Guide)",
-      icon: "/images/folder.png",
-      kind: "folder",
-      windowPosition: "top-[33vh] left-7",
-      children: [
-        {
-          id: 301,
-          name: "Full case study",
-          icon: "/images/folder.png",
-          kind: "folder",
-          children: [
-            {
-              id: 3011,
-              name: "Security-Blueprint.txt",
-              icon: "/images/txt.png",
-              kind: "file",
-              fileType: "txt",
-              subtitle: "Dual-Token Architecture & Cryptographic Specs",
-              description: [
-                "1. Core Security Paradigm:",
-                "• Dual-token strategy: Short-lived Access Tokens (15 minutes) + Encrypted Refresh Tokens (7 days).",
-                "• Stored in Secure HttpOnly, SameSite=Strict cookies to eliminate Cross-Site Scripting (XSS) attack vectors.",
-                "• Automated silent refresh interception through Axios/Fetch middleware with zero user session interruption.",
-                "",
-                "2. Threat Mitigation & Revocation:",
-                "• In-memory Redis token blacklisting for instantaneous session revocation upon password changes or logout.",
-                "• Cryptographic fingerprint validation preventing stolen refresh token replay attacks.",
-                "",
-                "3. Full-Stack Production Implementation:",
-                "• Complete backend service built with Node.js, Express.js, MongoDB, and Mongoose.",
-                "• Comprehensive unit and integration test suite verifying edge-case expiration behaviors.",
-              ],
-            },
-          ],
-        },
-        {
-          id: 302,
-          name: "Design.fig",
-          icon: "/images/figma.png",
-          kind: "file",
-          fileType: "fig",
-          href: "https://figma.com",
-        },
-        {
-          id: 303,
-          name: "Screenshot.png",
-          kind: "file",
-          fileType: "img",
-          imageUrl: "/images/jwt-token.jpg",
-        },
-        {
-          id: 304,
-          name: "jwt-security-guide.com",
-          icon: "/images/safari.png",
-          kind: "file",
-          fileType: "url",
-          href: "https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f",
-        },
-        {
-          id: 305,
-          name: "TLDR.txt",
-          icon: "/images/txt.png",
-          kind: "file",
-          fileType: "txt",
-          subtitle: "JWT Access & Refresh Token System — Deep Dive",
-          image: "/images/jwt-token.jpg",
-          description: [
-            "A comprehensive technical deep-dive and production-ready architecture blueprint on modern authentication security.",
-            "Published on Medium to widespread developer acclaim, covering HttpOnly cookie storage, silent token rotation, Redis blacklisting, and CSRF/XSS defense strategies.",
-            "Includes production-tested Node.js, Express, and React reference implementations for enterprise-grade authentication.",
-          ],
-        },
-      ],
-    },
-
-    // ▶ Project 4: macOS & iOS Portfolio OS
+    // ▶ Project 3: macOS & iOS Portfolio OS
     {
       id: 8,
       name: "macOS & iOS Portfolio OS",
       icon: "/images/folder.png",
       kind: "folder",
-      windowPosition: "top-[40vh] left-7",
+      windowPosition: "top-[33vh] left-7",
       children: [
         {
           id: 401,
