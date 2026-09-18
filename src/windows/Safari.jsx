@@ -228,9 +228,20 @@ const Safari = () => {
                 Understanding How Access &amp; Refresh Tokens (JWT) Work
               </h1>
 
-              <p className="text-xs text-zinc-400 mt-2 leading-relaxed">
-                By <strong className="text-zinc-200 font-medium">Pratham Tiwari</strong> — Full Stack &amp; Backend Engineering Guide
-              </p>
+              <div className="flex items-center justify-between flex-wrap gap-2 mt-2">
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  By <strong className="text-zinc-200 font-medium">Pratham Tiwari</strong> — Full Stack &amp; Backend Engineering Guide
+                </p>
+                <a
+                  href="https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-2.5 py-1 bg-[#1a8917] hover:bg-[#156f12] text-white rounded-lg text-[11px] font-medium inline-flex items-center gap-1 transition-colors"
+                >
+                  <span>Open on Medium</span>
+                  <ArrowRight size={10} />
+                </a>
+              </div>
             </div>
 
             {/* Hero Image */}

@@ -120,10 +120,10 @@ const Finder = () => {
   const handleItemClick = (item) => {
     if (item.kind === 'folder') {
       openFolder(item);
-    } else if (item.fileType === 'safari' || item.name === 'jwt-security-guide.com') {
-      openWindow('safari');
     } else if (item.fileType === 'url' || item.href) {
-      window.open(item.href, '_blank');
+      window.open(item.href, '_blank', 'noopener,noreferrer');
+    } else if (item.fileType === 'safari') {
+      openWindow('safari');
     } else if (item.fileType === 'pdf') {
       openWindow('resume');
     } else if (item.fileType === 'txt') {
