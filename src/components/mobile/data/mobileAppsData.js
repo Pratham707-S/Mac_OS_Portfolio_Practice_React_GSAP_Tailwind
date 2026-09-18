@@ -27,7 +27,7 @@ export const filesProjectsData = [
     name: "JWT Architecture",
     displayTitle: "JWT Auth\n(Security System)",
     screenshotImg: "/images/jwt-token.jpg",
-    liveUrl: "https://medium.com/@pratham.1226667/understanding-access-and-refresh-tokens-jwt-012ab63cfbf5",
+    liveUrl: "https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f",
     domain: "medium.com/@pratham",
     tldr: "JWT Access & Refresh Token System — Architectural Deep Dive\n\n• Overview: Comprehensive guide and production reference on implementing secure dual-token authentication workflows.\n• Key Engineering: HttpOnly cookie storage, silent token rotation, Redis token blacklisting, and cross-site scripting (XSS/CSRF) mitigation.\n• Highlights: Published on Medium with wide developer readership and production-ready security blueprints.",
     caseStudy: "JWT Token Architecture — Comprehensive Security Case Study\n\n1. Core Security Paradigm:\n• Dual-token strategy: Short-lived Access Tokens (15m) + Encrypted Refresh Tokens (7d)\n• Automated silent refresh interception via Axios/Fetch middleware\n• Token revocation lists & secure fingerprint validation\n\n2. Implementation Highlights:\n• Protection against replay attacks and credential harvesting\n• Stateless authentication scaling to millions of concurrent sessions\n• Complete backend implementation in Node.js, Express & MongoDB\n\n3. Key Takeaways:\n• Zero token leakage via XSS protection\n• Seamless user session persistence across browser restarts",
@@ -80,7 +80,7 @@ export const safariBlogData = {
     subtitle: "A complete architectural deep-dive into secure authentication, silent token rotation, and HttpOnly cookie security.",
     date: "Published on Medium",
     readTime: "6 min read",
-    mediumUrl: "https://medium.com/@pratham.1226667/understanding-access-and-refresh-tokens-jwt-012ab63cfbf5",
+    mediumUrl: "https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f",
     tags: ["JWT", "Node.js", "Express", "Authentication", "Web Security", "React"],
   },
 };

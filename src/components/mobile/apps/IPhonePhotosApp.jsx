@@ -31,7 +31,7 @@ const photosList = [
     id: 4,
     title: "Understanding Access and Refresh Tokens (JWT)",
     img: "/images/jwt-token.jpg",
-    link: "https://medium.com/@pratham.1226667/understanding-access-and-refresh-tokens-jwt-012ab63cfbf5",
+    link: "https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f",
     buttonText: "Read on Medium",
     buttonBg: "bg-[#1a8917]",
   },

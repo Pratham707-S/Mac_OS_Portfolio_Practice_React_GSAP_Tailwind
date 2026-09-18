@@ -842,7 +842,7 @@ export const IPhoneNotesApp = ({ currentTime, isOpen, onClose, isDarkMode }) => 
               </div>
 
               <a
-                href="https://medium.com/@pratham.1226667/understanding-access-and-refresh-tokens-jwt-012ab63cfbf5"
+                href="https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 w-full py-2.5 bg-[#e5a00d] text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-transform"

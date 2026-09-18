@@ -281,7 +281,7 @@ const Terminal = () => {
             <p>
               <span className="text-[#60a5fa] font-bold">3. JWT Auth Architecture</span> — Full Stack Token System Article{' '}
               <a
-                href="https://medium.com/@pratham.1226667/understanding-access-and-refresh-tokens-jwt-012ab63cfbf5"
+                href="https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:underline"

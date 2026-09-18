@@ -31,7 +31,7 @@ const defaultPhotos = [
     img: '/images/jwt-token.jpg',
     type: 'image',
     category: 'Library',
-    link: 'https://medium.com/@pratham.1226667/understanding-access-and-refresh-tokens-jwt-012ab63cfbf5',
+    link: 'https://medium.com/@pratham.1226667/understanding-how-access-and-refresh-tokens-work-9bf0fb9a898f',
   },
   {
     id: 5,
