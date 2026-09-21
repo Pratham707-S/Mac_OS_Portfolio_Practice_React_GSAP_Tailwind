@@ -383,4 +383,4 @@ MAC-OS-portfilio-pratice-react_and_gsap/
 
 This project is open-source and available under the [MIT License](LICENSE).
 
-Developed and designed by [Pratham Tiwari](https://github.com/Pratham707-S).
+
